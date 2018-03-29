@@ -13,6 +13,10 @@
     "pg": "6.x",
     "express": "^4.16.3"
   },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
   "engines": {
     "node": "8.9.4"
   }
