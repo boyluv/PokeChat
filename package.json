@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "pg": "6.x",
     "express": "^4.16.3"
   },
   "engines": {
