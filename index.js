@@ -20,11 +20,11 @@ app.get('/db', function (request, response) {
       else
        {
            
-        results.forEach(function(r) { 
-            r.id  + r.name
-     }); 
+    //     results.forEach(function(r) { 
+    //         r.id  + r.name
+    //  }); 
 
-           response.send("Error " + result.rows); 
+           response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
         }//response.render('pages/db', {results: result.rows} ); }
     });
   });
