@@ -15,8 +15,16 @@ app.get('/db', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table', function(err, result) {
       done();
+      response.setHeader('Content-Type', 'application/json');
       if (err)
-       { console.error(err); response.send("Error " + err); }
+       { 
+        response.send(JSON.stringify({
+          status: 'error', 
+          data: err,
+          message: 'Request failed'
+          }));
+         console.error(err); response.send("Error " + err); 
+        }
       else
        {
            
@@ -29,7 +37,7 @@ app.get('/db', function (request, response) {
     //   data: result.row[0],
     //   message: 'Retrieved ALL puppies'
     // });
-    response.setHeader('Content-Type', 'application/json');
+    
     response.send(JSON.stringify({
       status: 'success', 
       data: result.rows,
