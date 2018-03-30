@@ -57,7 +57,7 @@ app.get('/db', function (request, response) {
   const {namid} = req.query
   var nameId = parseInt(req.query.id);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table where id=1', function(err, result) {
+    client.query('SELECT * FROM test_table where id='+namid, function(err, result) {
       done();
       response.setHeader('Content-Type', 'application/json');
       if (err)
