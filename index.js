@@ -51,7 +51,7 @@ app.get('/db', function (request, response) {
 });        
 
 //Get one with param from database
-app.get('/db/t', function (request, response) {
+app.get('/', function (request, response) {
   // const id = req.params.id
   // const {lat1,lat2,lng1,lng2} = req.query
   const {namid} = req.query
