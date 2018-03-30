@@ -54,7 +54,7 @@ app.get('/db', function (request, response) {
 app.get('/db/t', function (request, response) {
   // const id = req.params.id
   // const {lat1,lat2,lng1,lng2} = req.query
-  // const {namid} = req.query
+  const {namid} = req.query
   // var nameId = parseInt(req.query.id);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table where id=5', function(err, result) {
@@ -65,7 +65,7 @@ app.get('/db/t', function (request, response) {
         response.send(JSON.stringify({
           status: 'error', 
           data: err,
-          message: 'Request failed'
+          message: 'Request failed'+namid
           }));
          console.error(err); response.send("Error " + err); 
         }
