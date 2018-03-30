@@ -32,7 +32,7 @@ app.get('/db', function (request, response) {
     response.setHeader('Content-Type', 'application/json');
     response.send(JSON.stringify({
       status: 'success', 
-      data: result,
+      data: result.rows,
       message: 'Return test file'
       }));
           // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
