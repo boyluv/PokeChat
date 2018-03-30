@@ -30,7 +30,11 @@ app.get('/db', function (request, response) {
     //   message: 'Retrieved ALL puppies'
     // });
     response.setHeader('Content-Type', 'application/json');
-    response.send(JSON.stringify({ a: 1 }));
+    response.send(JSON.stringify({
+      status: 'success', 
+      data: result,
+      message: 'Return test file'
+      }));
           // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
         }//response.render('pages/db', {results: result.rows} ); }
     });
