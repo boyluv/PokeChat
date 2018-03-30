@@ -80,34 +80,34 @@ app.get('/db/:id', function (request, response) {
 
 
 //Create new one from db
-// app.post('/db/add/', function (request, response) {
-//   // const idUser = parseInt(request.params.id);
-//   // const {id,name} = request.query
+app.post('/db/add/', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {id,name} = request.query
   
-//   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-//     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-//     client.query("insert into test_table values (34,'abcd')", function(err, result) {
+  // pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+  //   // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+  //   client.query("insert into test_table values (34,'abcd')", function(err, result) {
       
-//       done();
-//       response.setHeader('Content-Type', 'application/json');
-//       if (err)
-//        { 
-//         response.send(JSON.stringify({
-//           status: 'error', 
-//           data: err,
-//           message: 'Request failed'
-//           }));
-//          console.error(err); response.send("Error " + err); 
-//         }
-//       else
-//        {
-//     response.send(JSON.stringify({
-//       status: 'success', 
-//       message: 'Inserted'
-//       }));
-//         }
-//     });
-//   });
-// });   
+  //     done();
+  //     response.setHeader('Content-Type', 'application/json');
+  //     if (err)
+  //      { 
+  //       response.send(JSON.stringify({
+  //         status: 'error', 
+  //         data: err,
+  //         message: 'Request failed'
+  //         }));
+  //        console.error(err); response.send("Error " + err); 
+  //       }
+  //     else
+  //      {
+  //   response.send(JSON.stringify({
+  //     status: 'success', 
+  //     message: 'Inserted'
+  //     }));
+  //       }
+  //   });
+  // });
+});   
 
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))  
