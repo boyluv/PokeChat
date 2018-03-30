@@ -54,8 +54,8 @@ app.get('/db', function (request, response) {
 app.get('/db/t', function (request, response) {
   // const id = req.params.id
   // const {lat1,lat2,lng1,lng2} = req.query
-  const {namid} = req.query
-  var nameId = parseInt(req.query.id);
+  // const {namid} = req.query
+  // var nameId = parseInt(req.query.id);
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table where id=5', function(err, result) {
       done();
