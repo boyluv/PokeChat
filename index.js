@@ -23,12 +23,14 @@ app.get('/db', function (request, response) {
     //     results.forEach(function(r) { 
     //         r.id  + r.name
     //  }); 
-    response.status(200)
-    .json({
-      status: 'success',
-      data: result.row[0],
-      message: 'Retrieved ALL puppies'
-    });
+    // response.status(200)
+    // .json({
+    //   status: 'success',
+    //   data: result.row[0],
+    //   message: 'Retrieved ALL puppies'
+    // });
+    response.setHeader('Content-Type', 'application/json');
+    response.send(JSON.stringify({ a: 1 }));
           // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
         }//response.render('pages/db', {results: result.rows} ); }
     });
