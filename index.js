@@ -23,8 +23,13 @@ app.get('/db', function (request, response) {
     //     results.forEach(function(r) { 
     //         r.id  + r.name
     //  }); 
-
-           response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
+    response.status(200)
+    .json({
+      status: 'success',
+      data: result.row[0],
+      message: 'Retrieved ALL puppies'
+    });
+          // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
         }//response.render('pages/db', {results: result.rows} ); }
     });
   });
