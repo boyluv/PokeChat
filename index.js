@@ -86,7 +86,7 @@ app.post('/db/add/', function (request, response) {
   
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query('insert into test_table values ('+"34"+', \''+"abcd"+'\')', function(err, result) {
+    client.query("insert into test_table values (34,'abcd')", function(err, result) {
       
       done();
       response.setHeader('Content-Type', 'application/json');
