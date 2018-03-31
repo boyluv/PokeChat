@@ -224,7 +224,6 @@ app.get('/categories', function (request, response) {
   });
 });
 
-
 //Insert new user
 app.post('/user/add/', function (request, response) {
   // const idUser = parseInt(request.params.id);
