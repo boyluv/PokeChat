@@ -332,4 +332,32 @@ app.post('/user/replies/', function (request, response) {
     });
   });
 });
+
+//Remove message with id
+app.delete('/replies/remove/:id', function (request, response) {
+  const idRep = parseInt(request.params.id);
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    // SELECT * FROM categories 
+    // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
+    client.query('DELETE from replies where user_id = ' + idRep, function (err, result) {
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          message: 'Remove success'
+        }));
+      }
+    });
+  });
+});
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
