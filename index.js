@@ -240,7 +240,7 @@ app.post('/user/add/', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "INSERT INTO users VALUES ("+id+",'"+name+"','e19d5cd5af0378da05f63f891c7467af','\\001')"
+      "INSERT INTO users VALUES ("+id+",'"+name+"','"+pass+"','\\001')"
       , function (err, result) {
 
       done();
