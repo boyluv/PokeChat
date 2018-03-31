@@ -276,13 +276,12 @@ app.get('/user/login/', function (request, response) {
       , function (err, result) {
 
       done();
-      
       response.setHeader('Content-Type', 'application/json');
-      if (err || result.rows) {
+      if (err || result.rows.size == 0) {
         response.send(JSON.stringify({
           status: 'error',
           isSignin: false,
-          data: null,
+          data: err,
           message: 'Request failed'
         }));
         console.error(err);
