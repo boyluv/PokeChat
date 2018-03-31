@@ -5,115 +5,142 @@ const PORT = process.env.PORT || 5000
 const app = express()
 
 app.get('/',
-(req, res) => {
+  (req, res) => {
     res.send("Hello super new World!!!!!!!!!!!!!")
-        })
+  })
 
 var pg = require('pg');
 
 //Get all from database
 app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query('SELECT * FROM test_table', function (err, result) {
       done();
       response.setHeader('Content-Type', 'application/json');
-      if (err)
-       { 
+      if (err) {
         response.send(JSON.stringify({
-          status: 'error', 
+          status: 'error',
           data: err,
           message: 'Request failed'
-          }));
-         console.error(err); response.send("Error " + err); 
-        }
-      else
-       {
-           
-    //     results.forEach(function(r) { 
-    //         r.id  + r.name
-    //  }); 
-    // response.status(200)
-    // .json({
-    //   status: 'success',
-    //   data: result.row[0],
-    //   message: 'Retrieved ALL puppies'
-    // });
-    
-    response.send(JSON.stringify({
-      status: 'success', 
-      data: result.rows,
-      message: 'Return test file'
-      }));
-          // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
-        }//response.render('pages/db', {results: result.rows} ); }
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+
+        //     results.forEach(function(r) { 
+        //         r.id  + r.name
+        //  }); 
+        // response.status(200)
+        // .json({
+        //   status: 'success',
+        //   data: result.row[0],
+        //   message: 'Retrieved ALL puppies'
+        // });
+
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          message: 'Return test file'
+        }));
+        // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
+      } //response.render('pages/db', {results: result.rows} ); }
     });
   });
-});        
+});
 
 //Get one with param from database
 app.get('/db/:id', function (request, response) {
   const idUser = parseInt(request.params.id);
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table where id='+idUser, function(err, result) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query('SELECT * FROM test_table where id=' + idUser, function (err, result) {
       done();
       response.setHeader('Content-Type', 'application/json');
-      if (err)
-       { 
+      if (err) {
         response.send(JSON.stringify({
-          status: 'error', 
+          status: 'error',
           data: err,
           message: 'Request failed'
-          }));
-         console.error(err); response.send("Error " + err); 
-        }
-      else
-       {
-    response.send(JSON.stringify({
-      status: 'success', 
-      data: result.rows,
-      message: 'Return test file'
-      }));
-        }
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          message: 'Return test file'
+        }));
+      }
     });
   });
-});        
+});
 
 
 //Create new one from db
 app.post('/db/add/', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  const {id,name} = request.query
-  
+  const {
+    id,
+    name
+  } = request.query
+
   // response.send(JSON.stringify({
   //   status: 'success', 
   //   data: name,
   //   message: 'Return test file'
   //   }));
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query("insert into test_table values ("+id+",'"+name+"')", function(err, result) {
-      
+    client.query("insert into test_table values (" + id + ",'" + name + "')", function (err, result) {
+
       done();
       response.setHeader('Content-Type', 'application/json');
-      if (err)
-       { 
+      if (err) {
         response.send(JSON.stringify({
-          status: 'error', 
+          status: 'error',
           data: err,
           message: 'Request failed'
-          }));
-         console.error(err); response.send("Error " + err); 
-        }
-      else
-       {
-    response.send(JSON.stringify({
-      status: 'success', 
-      message: 'Inserted'
-      }));
-        }
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          message: 'Inserted'
+        }));
+      }
     });
   });
-});  
+});
 
 
-app.listen(PORT, () => console.log('Example app listening on port 5000!'))  
+//Get One conservation with id
+app.get('/convo/:id', function (request, response) {
+  const idUser = parseInt(request.params.id);
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      "SELECT users.user_name,replies.rep_message FROM replies"+
+      "INNER JOIN users ON replies.rep_by = users.user_id "+
+      "WHERE related_to_convo = 2 ORDER BY rep_id ASC;", 
+      function (err, result) {
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          message: 'Return test file'
+        }));
+      }
+    });
+  });
+});
+
+app.listen(PORT, () => console.log('Example app listening on port 5000!'))
