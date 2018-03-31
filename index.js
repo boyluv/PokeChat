@@ -200,46 +200,7 @@ app.get('/users', function (request, response) {
   });
 });
 
-//Create new one from db
-app.post('/user/add/', function (request, response) {
-  // const idUser = parseInt(request.params.id);
-  const {
-    id,
-    name,
-    pass,
-    isUser
-  } = request.query
 
-  // response.send(JSON.stringify({
-  //   status: 'success', 
-  //   data: name,
-  //   message: 'Return test file'
-  //   }));
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query(
-      "INSERT INTO users VALUES ("+id+",'"+name+"','e19d5cd5af0378da05f63f891c7467af','\\001')"
-      , function (err, result) {
-
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: 'Request failed'
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          message: 'Inserted'
-        }));
-      }
-    });
-  });
-});
 
 //Get all user in system
 app.get('/categories', function (request, response) {
@@ -269,6 +230,64 @@ app.get('/categories', function (request, response) {
 });
 
 //Insert new user
+app.post('/user/add/', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {
+    id,
+    name,
+    pass,
+    isUser
+  } = request.query
 
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+    client.query(
+      "INSERT INTO users VALUES ("+id+",'"+name+"','e19d5cd5af0378da05f63f891c7467af','\\001')"
+      , function (err, result) {
 
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          message: 'Inserted'
+        }));
+      }
+    });
+  });
+});
+
+//Remove user with id
+app.remove('/user/remove/:id', function (request, response) {
+  const idUser = parseInt(request.params.id);
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query('delete from users where user_id = ' + idUser, function (err, result) {
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          message: 'Remove success'
+        }));
+      }
+    });
+  });
+});
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
