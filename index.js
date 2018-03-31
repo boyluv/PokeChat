@@ -143,7 +143,6 @@ app.get('/convo/:id', function (request, response) {
   });
 });
 
-
 //Get all list conservation
 app.get('/listconvo', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -199,8 +198,6 @@ app.get('/users', function (request, response) {
       });
   });
 });
-
-
 
 //Get all user in system
 app.get('/categories', function (request, response) {
@@ -293,11 +290,6 @@ app.delete('/user/remove/:id', function (request, response) {
   });
 });
 
-
-//Insert new Message
-// INSERT INTO replies (rep_id,rep_message,related_to_convo,rep_by,rep_time) VALUES
-// (1,'hello',1,1,CURRENT_TIMESTAMP)
-//Insert new user
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
