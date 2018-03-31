@@ -118,29 +118,59 @@ app.get('/convo/:id', function (request, response) {
   const convo_id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "SELECT users.user_name,replies.rep_message FROM replies "+
-      " INNER JOIN users ON replies.rep_by = users.user_id "+
-      " WHERE related_to_convo = "+convo_id+" ORDER BY rep_id ASC ", 
+      "SELECT users.user_name,replies.rep_message FROM replies " +
+      " INNER JOIN users ON replies.rep_by = users.user_id " +
+      " WHERE related_to_convo = " + convo_id + " ORDER BY rep_id ASC ",
       function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: 'Request failed'
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          data: result.rows,
-          message: 'Return test file'
-        }));
-      }
-    });
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Return test file'
+          }));
+        }
+      });
   });
 });
 
+
+//Get all list conservation
+app.get('/convo/all', function (request, response) {
+  const convo_id = parseInt(request.params.id);
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      " SELECT users.user_name,replies.rep_message,replies.related_to_convo FROM users " +
+      " INNER JOIN replies ON users.user_id = replies.rep_by " +
+      " ORDER BY rep_id ASC ",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Return test file'
+          }));
+        }
+      });
+  });
+});
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
