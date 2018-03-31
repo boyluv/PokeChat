@@ -277,11 +277,11 @@ app.get('/user/login/', function (request, response) {
 
       done();
       response.setHeader('Content-Type', 'application/json');
-      if (err || true) {
+      if (err || result.rows) {
         response.send(JSON.stringify({
           status: 'error',
           isSignin: false,
-          data: err,
+          data: ,
           message: 'Request failed'
         }));
         console.error(err);
