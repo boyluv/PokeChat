@@ -283,8 +283,8 @@ app.get('/user/login/', function (request, response) {
           data: err,
           message: 'Request failed'
         }));
-        console.error(err);
-        response.send("Error " + err);
+        // console.error(err);
+        // response.send("Error " + err);
       } else {
         response.send(JSON.stringify({
           status: 'success',
