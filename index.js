@@ -74,7 +74,6 @@ app.get('/db/:id', function (request, response) {
   });
 });
 
-
 //Create new one from db
 app.post('/db/add/', function (request, response) {
   // const idUser = parseInt(request.params.id);
