@@ -276,6 +276,7 @@ app.get('/user/login/', function (request, response) {
       , function (err, result) {
 
       done();
+      
       response.setHeader('Content-Type', 'application/json');
       if (err || result.rows) {
         response.send(JSON.stringify({
