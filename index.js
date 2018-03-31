@@ -277,7 +277,7 @@ app.get('/user/login/', function (request, response) {
 
       done();
       response.setHeader('Content-Type', 'application/json');
-      if (err || result.length == 0) {
+      if (err || result.rows.size == 0) {
         response.send(JSON.stringify({
           status: 'error',
           isSignin: false,
