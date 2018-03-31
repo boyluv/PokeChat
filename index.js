@@ -115,12 +115,12 @@ app.post('/db/add/', function (request, response) {
 
 //Get One conservation with id
 app.get('/convo/:id', function (request, response) {
-  const idUser = parseInt(request.params.id);
+  const convo_id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT users.user_name,replies.rep_message FROM replies "+
       " INNER JOIN users ON replies.rep_by = users.user_id "+
-      " WHERE related_to_convo = 2 ORDER BY rep_id ASC ", 
+      " WHERE related_to_convo = "+convo_id+" ORDER BY rep_id ASC ", 
       function (err, result) {
       done();
       response.setHeader('Content-Type', 'application/json');
