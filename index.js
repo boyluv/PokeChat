@@ -172,4 +172,60 @@ app.get('/listconvo', function (request, response) {
       });
   });
 });
+
+//Get all user in system
+app.get('/users', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      "SELECT * FROM users ",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Return test file'
+          }));
+        }
+      });
+  });
+});
+
+//Get all user in system
+app.get('/categories', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      "SELECT * FROM categories ",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Return test file'
+          }));
+        }
+      });
+  });
+});
+
+
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
