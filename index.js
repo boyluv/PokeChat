@@ -281,7 +281,7 @@ app.get('/user/login/', function (request, response) {
         response.send(JSON.stringify({
           status: 'error',
           isSignin: false,
-          data: ,
+          data: null,
           message: 'Request failed'
         }));
         console.error(err);
