@@ -274,10 +274,9 @@ app.get('/user/login/', function (request, response) {
     client.query(
       "SELECT user_id from users where user_name ='"+name+"' and user_pw='"+pass+"'"
       , function (err, result) {
-
       done();
       response.setHeader('Content-Type', 'application/json');
-      if (err || result.rows) {
+      if (err) {
         response.send(JSON.stringify({
           status: 'error',
           isSignin: false,
