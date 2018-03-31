@@ -269,7 +269,9 @@ app.post('/user/add/', function (request, response) {
 app.remove('/user/remove/:id', function (request, response) {
   const idUser = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query('delete from users where user_id = ' + idUser, function (err, result) {
+    // SELECT * FROM categories 
+    // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
+    client.query('SELECT * FROM categories ', function (err, result) {
       done();
       response.setHeader('Content-Type', 'application/json');
       if (err) {
@@ -290,4 +292,5 @@ app.remove('/user/remove/:id', function (request, response) {
     });
   });
 });
+
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
