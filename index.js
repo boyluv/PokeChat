@@ -199,7 +199,7 @@ app.get('/users', function (request, response) {
   });
 });
 
-//Get all user in system
+//Get all catergories in system
 app.get('/categories', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
@@ -225,6 +225,7 @@ app.get('/categories', function (request, response) {
       });
   });
 });
+
 
 //Insert new user
 app.post('/user/add/', function (request, response) {
@@ -262,6 +263,41 @@ app.post('/user/add/', function (request, response) {
   });
 });
 
+//Get user id if sign in success
+//Insert new user
+app.get('/user/login/', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {name,pass} = request.query
+
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+    client.query(
+      "SELECT user_id from users where user_name ='"+name+"' and user_pw='"+pass+"'"
+      , function (err, result) {
+
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          isSignin: false,
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          isSignin: true,
+          message: 'Here is your id User'
+        }));
+      }
+    });
+  });
+});
+
 //Remove user with id
 app.delete('/user/remove/:id', function (request, response) {
   const idUser = parseInt(request.params.id);
@@ -290,6 +326,7 @@ app.delete('/user/remove/:id', function (request, response) {
   });
 });
 
+//Insert new replies
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
