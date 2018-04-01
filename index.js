@@ -384,6 +384,7 @@ app.delete('/replies/remove/:id', function (request, response) {
 
 //10--Get key to crypto
 app.get('/key', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');
   response.send(JSON.stringify({
     status: 'success',
     data: "pokeChat",
