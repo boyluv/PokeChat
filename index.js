@@ -334,7 +334,7 @@ app.post('/user/replies/', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "INSERT INTO replies (rep_id,rep_message,related_to_convo,rep_by,rep_time) VALUES ("+rep_id+",'"+rep_message+"',"+related_to_convo+","+rep_by+",CURRENT_TIMESTAMP)"
+      "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('"+rep_message+"',"+ref_convo_id+","+rep_by+",CURRENT_TIMESTAMP)"
       , function (err, result) {
 
       done();
