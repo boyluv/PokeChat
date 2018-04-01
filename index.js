@@ -330,7 +330,6 @@ app.post('/user/replies/', function (request, response) {
     related_to_convo,
     rep_by
   } = request.query
-
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
