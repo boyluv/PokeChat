@@ -383,12 +383,12 @@ app.delete('/replies/remove/:id', function (request, response) {
 });
 
 //10--Get key to crypto
-app.get('/users', function (request, response) {
+app.get('/key', function (request, response) {
   var key = '{"key":"pokeChat"}';
   response.send(JSON.stringify({
     status: 'success',
     data: JSON.parse(key),
-    message: 'Return test file'
+    message: 'Return key'
   }));
 });
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
