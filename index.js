@@ -111,14 +111,14 @@ app.post('/db/add/', function (request, response) {
   });
 });
 
-//Get One conservation with id
+//1--Get One conservation with id
 app.get('/convo/:id', function (request, response) {
   const convo_id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT users.user_name,replies.rep_message FROM replies " +
       " INNER JOIN users ON replies.rep_by = users.user_id " +
-      " WHERE related_to_convo = " + convo_id + " ORDER BY rep_id ASC ",
+      " WHERE ref_convo_id = " + convo_id + " ORDER BY rep_id ASC ",
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -141,7 +141,7 @@ app.get('/convo/:id', function (request, response) {
   });
 });
 
-//Get all list conservation
+//2--Get all list conservation
 app.get('/listconvo', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
@@ -170,7 +170,7 @@ app.get('/listconvo', function (request, response) {
   });
 });
 
-//Get all user in system
+//3--Get all user in system
 app.get('/users', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
@@ -197,7 +197,7 @@ app.get('/users', function (request, response) {
   });
 });
 
-//Get all catergories in system
+//4--Get all catergories in system
 app.get('/categories', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
@@ -224,7 +224,7 @@ app.get('/categories', function (request, response) {
   });
 });
 
-//Insert new user
+//5--Insert new user
 app.post('/user/add/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
@@ -261,7 +261,7 @@ app.post('/user/add/', function (request, response) {
 });
 
 //Get user id if sign in success
-//Insert new user
+//6--
 app.get('/user/login/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {name,pass} = request.query
@@ -294,7 +294,7 @@ app.get('/user/login/', function (request, response) {
   });
 });
 
-//Remove user with id
+//7--Remove user with id
 app.delete('/user/remove/:id', function (request, response) {
   const idUser = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -322,7 +322,7 @@ app.delete('/user/remove/:id', function (request, response) {
   });
 });
 
-//Insert new replies
+//8--Insert new replies
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
@@ -358,7 +358,7 @@ app.post('/user/replies/', function (request, response) {
   });
 });
 
-//Remove message with id
+//9--Remove message with id
 app.delete('/replies/remove/:id', function (request, response) {
   const idRep = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
