@@ -82,7 +82,7 @@ WHERE rep_id IN(SELECT MAX(replies.rep_id) FROM replies
 /*
 SELECT users.user_name,replies.rep_message FROM replies
 INNER JOIN users ON replies.rep_by = users.user_id 
-WHERE related_to_convo = 2 ORDER BY rep_id ASC;
+WHERE ref_convo_id = 2 ORDER BY rep_id ASC;
 
 SELECT users.user_name,replies.rep_message,replies.related_to_convo FROM users
 INNER JOIN replies ON users.user_id = replies.rep_by

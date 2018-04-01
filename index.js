@@ -111,7 +111,7 @@ app.post('/db/add/', function (request, response) {
   });
 });
 
-//1--Get One conservation with id
+//1--Get One conservation with  id
 app.get('/convo/:id', function (request, response) {
   const convo_id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
