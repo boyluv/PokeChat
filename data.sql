@@ -11,6 +11,7 @@ CREATE TABLE "users" (
 	"user_id" serial NOT NULL,
 	"user_name" varchar(30) NOT NULL UNIQUE,
 	"user_pw" varchar(255) NOT NULL,
+	"pb_key" varchar(255) NOT NULL,
 	"is_user" boolean NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY ("user_id")
 ) WITH (
@@ -49,7 +50,7 @@ INSERT INTO categories VALUES (1,'education','where you can discuss educational 
 -- INSERT INTO users VALUES (1,'huy','e19d5cd5af0378da05f63f891c7467af','\\001'); 
 -- INSERT INTO users VALUES (2,'tuan','865541678b41810342b917f8c79d5137','\\000');
 -- INSERT INTO users VALUES (3,'binh','a6a9ab0e57c78ca08ba5f5cd0b0f3ecd','\\001');
-INSERT INTO users (user_name,user_pw,is_user) VALUES ('huy','abcd1234','1'),('tuan','boylvu','0'),('binh','skynet1128','1');
+INSERT INTO users (user_name,user_pw,pb_key,is_user) VALUES ('huy','abcd1234','temp','1'),('tuan','boylvu','temp','0'),('binh','skynet1128','temp','1');
 
 -- INSERT INTO conversations (convo_id,convo_cat,convo_by,convo_time) VALUES (1,1,1,CURRENT_TIMESTAMP),(2,1,3,CURRENT_TIMESTAMP);
 INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (1,1,CURRENT_TIMESTAMP),(1,3,CURRENT_TIMESTAMP);
