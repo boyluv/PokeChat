@@ -336,7 +336,6 @@ app.post('/user/replies/', function (request, response) {
     client.query(
       "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('"+rep_message+"',"+ref_convo_id+","+rep_by+",CURRENT_TIMESTAMP)"
       , function (err, result) {
-
       done();
       response.setHeader('Content-Type', 'application/json');
       if (err) {
