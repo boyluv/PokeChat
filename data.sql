@@ -84,6 +84,6 @@ SELECT users.user_name,replies.rep_message FROM replies
 INNER JOIN users ON replies.rep_by = users.user_id 
 WHERE ref_convo_id = 2 ORDER BY rep_id ASC;
 
-SELECT users.user_name,replies.rep_message,replies.related_to_convo FROM users
+SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users
 INNER JOIN replies ON users.user_id = replies.rep_by
 ORDER BY rep_id ASC;*/

@@ -145,7 +145,7 @@ app.get('/convo/:id', function (request, response) {
 app.get('/listconvo', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "SELECT users.user_name,replies.rep_message,replies.related_to_convo FROM users " +
+      "SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users " +
       " INNER JOIN replies ON users.user_id = replies.rep_by " + 
       " ORDER BY rep_id ASC ",
       function (err, result) {
