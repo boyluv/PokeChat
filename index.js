@@ -326,7 +326,7 @@ app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
     rep_message,
-    related_to_convo,
+    ref_convo_id,
     rep_by
   } = request.query
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
