@@ -325,7 +325,6 @@ app.delete('/user/remove/:id', function (request, response) {
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
-    rep_id,
     rep_message,
     related_to_convo,
     rep_by
