@@ -62,7 +62,6 @@ INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES
 ('hello',1,1,CURRENT_TIMESTAMP),('hi',2,3,CURRENT_TIMESTAMP)
 ,('hello, huy',1,2,CURRENT_TIMESTAMP),('hello,binh',2,2,CURRENT_TIMESTAMP);
 
-
 -- SELECT tat ca messages cua 1 nguoi, noi voi ai, trong convo nao
 /*SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users
 INNER JOIN replies ON users.user_id = replies.rep_by
