@@ -393,28 +393,55 @@ app.get('/key', function (request, response) {
   }));
 });
 
-app.get('/test', function (request, response) {
+//11--Get all convo belong to user id
+//4--Get all catergories in system
+app.get('/user/convo', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query('SELECT * FROM user', function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: 'Request failed'
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          data: result.rows,
-          message: 'Return test file'
-        }));
-        // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
-      } //response.render('pages/db', {results: result.rows} ); }
-    });
+    client.query(
+      "SELECT * FROM categories ",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Return test file'
+          }));
+        }
+      });
   });
 });
+// app.get('/test', function (request, response) {
+//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+//     client.query('SELECT * FROM user', function (err, result) {
+//       done();
+//       response.setHeader('Content-Type', 'application/json');
+//       if (err) {
+//         response.send(JSON.stringify({
+//           status: 'error',
+//           data: err,
+//           message: 'Request failed'
+//         }));
+//         console.error(err);
+//         response.send("Error " + err);
+//       } else {
+//         response.send(JSON.stringify({
+//           status: 'success',
+//           data: result.rows,
+//           message: 'Return test file'
+//         }));
+//         // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
+//       } //response.render('pages/db', {results: result.rows} ); }
+//     });
+//   });
+// });
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
