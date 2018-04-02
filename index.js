@@ -495,16 +495,12 @@ app.delete('/request/remove/:id', function (request, response) {
   });
 });
 
-//15--Add convo and return id , input categories and user id
-//--Get all list conservation
-app.get('/convo/add', function (request, response) {
-  const {
-    convo_by,
-    convo_cat
-  } = request.query
+//16
+app.get('/convoadd/:id', function (request, response) {
+  const id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "select * from conversations ",
+      " select * from request WHERE CAST(req_receiver AS integer)  = " + id,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -517,16 +513,58 @@ app.get('/convo/add', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: 'Return test file'
-          }));
-
+          if (result.rows.length > 0)
+            response.send(JSON.stringify({
+              status: 'success',
+              haveNotification: true,
+              data: result.rows,
+              message: 'Return test file'
+            }));
+          else
+            response.send(JSON.stringify({
+              status: 'success',
+              haveNotification: false,
+              data: result.rows,
+              message: 'Return test file'
+            }));
         }
       });
   });
 });
+
+
+//15--Add convo and return id , input categories and user id
+//--Get all list conservation
+// app.get('/convo/add', function (request, response) {
+//   const {
+//     convo_by,
+//     convo_cat
+//   } = request.query
+//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+//     client.query(
+//       "select * from conversations ",
+//       function (err, result) {
+//         done();
+//         response.setHeader('Content-Type', 'application/json');
+//         if (err) {
+//           response.send(JSON.stringify({
+//             status: 'error',
+//             data: err,
+//             message: 'Request failed'
+//           }));
+//           console.error(err);
+//           response.send("Error " + err);
+//         } else {
+//           response.send(JSON.stringify({
+//             status: 'success',
+//             data: result.rows,
+//             message: 'Return test file'
+//           }));
+
+//         }
+//       });
+//   });
+// });
           // if (result.rows.length > 0) {
           //   response.send(JSON.stringify({
           //     status: 'success',
