@@ -24,7 +24,7 @@ CREATE TABLE "users" (
 	"user_id" serial NOT NULL,
 	"user_name" varchar(30) NOT NULL UNIQUE,
 	"user_pw" varchar(255) NOT NULL,
-	"pb_key" varchar(255) NOT NULL,
+	"pb_key" varchar(500) NOT NULL,
 	-- "is_user" boolean NOT NULL,
 	"ref_cat_id" integer NOT NULL, -- thay cho is_user	
 	CONSTRAINT users_pk PRIMARY KEY ("user_id")
