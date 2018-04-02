@@ -233,7 +233,6 @@ app.post('/user/add/', function (request, response) {
     pb_key,
     ref_cat_id
   } = request.query
-
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
