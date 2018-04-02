@@ -519,17 +519,36 @@ app.get('/convoadd', function (request, response) {
           if (result.rows.length > 0)
             response.send(JSON.stringify({
               status: 'success',
-              haveNotification: true,
               data: result.rows,
               message: 'Return test file'
             }));
-          else
-            response.send(JSON.stringify({
-              status: 'success',
-              haveNotification: false,
-              data: result.rows,
-              message: 'Return test file'
-            }));
+          else{
+            client.query(
+              " select * from conversations where convo_cat = "+convo_cat+" and convo_by = "+convo_by,
+              function (err2, result2) {
+                done();
+                response.setHeader('Content-Type', 'application/json');
+                if (err2) {
+                  response.send(JSON.stringify({
+                    status: 'error',
+                    data: err2,
+                    message: 'Request failed'
+                  }));
+                  console.error(err2);
+                  response.send("Error " + err2);
+                } else {
+                  response.send(JSON.stringify({
+                    status: 'He he nothing',
+                    data: null,
+                    message: 'Request failed'
+                  }));
+                    
+                }
+              }
+
+            );
+          }
+            
         }
       });
   });
