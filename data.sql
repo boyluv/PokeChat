@@ -6,6 +6,19 @@ CREATE TABLE "categories" (
 ) WITH (
   OIDS=FALSE
 );
+CREATE TABLE "request" (
+	"req_id" serial NOT NULL,
+	"req_sender" integer NOT NULL,
+	"req_receiver" integer NOT NULL,	
+	"message" varchar(255) NOT NULL,
+	CONSTRAINT request_pk PRIMARY KEY ("req_id")
+) WITH (
+  OIDS=FALSE
+);
+
+-- INSERT INTO request (req_sender,req_receiver,message) VALUES (1,2,'Hello 2');
+-- DELETE FROM request WHERE CAST(req_receiver AS integer)  = 2;
+-- select * from request WHERE CAST(req_receiver AS integer)  = 2;
 
 CREATE TABLE "users" (
 	"user_id" serial NOT NULL,

@@ -394,12 +394,12 @@ app.get('/key', function (request, response) {
 });
 
 
-//11--Get all convo belong to user id
-//4--Get all catergories in system
-app.get('/user/convo', function (request, response) {
+//11--Get all request with your id
+app.get('/request/:id', function (request, response) {
+  const id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "SELECT * FROM categories ",
+      " select * from request WHERE CAST(req_receiver AS integer)  = "+id,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -421,6 +421,100 @@ app.get('/user/convo', function (request, response) {
       });
   });
 });
+
+//12--add new replies
+app.post('/request/add', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {
+    req_sender,
+    req_receiver,
+    message
+  } = request.query
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+    client.query(
+      "INSERT INTO request (req_sender,req_receiver,message) VALUES ("+req_sender+","+req_receiver+",'"+message+"');"
+      , function (err, result) {
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          message: 'Inserted'
+        }));
+      }
+    });
+  });
+});
+
+//14--delete replies with id
+app.delete('/request/remove/:id', function (request, response) {
+  const idReq = parseInt(request.params.id);
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    // SELECT * FROM categories 
+    // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
+    client.query('DELETE FROM request WHERE CAST(req_receiver AS integer)  =' + idReq, function (err, result) {
+      done();
+      response.setHeader('Content-Type', 'application/json');
+      if (err) {
+        response.send(JSON.stringify({
+          status: 'error',
+          data: err,
+          message: 'Request failed'
+        }));
+        console.error(err);
+        response.send("Error " + err);
+      } else {
+        response.send(JSON.stringify({
+          status: 'success',
+          data: result.rows,
+          message: 'Remove success'
+        }));
+      }
+    });
+  });
+});
+
+
+
+
+
+
+
+//4--Get all catergories in system
+// app.get('/user/convo', function (request, response) {
+//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+//     client.query(
+//       "SELECT * FROM categories ",
+//       function (err, result) {
+//         done();
+//         response.setHeader('Content-Type', 'application/json');
+//         if (err) {
+//           response.send(JSON.stringify({
+//             status: 'error',
+//             data: err,
+//             message: 'Request failed'
+//           }));
+//           console.error(err);
+//           response.send("Error " + err);
+//         } else {
+//           response.send(JSON.stringify({
+//             status: 'success',
+//             data: result.rows,
+//             message: 'Return test file'
+//           }));
+//         }
+//       });
+//   });
+// });
 // app.get('/test', function (request, response) {
 //   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
 //     client.query('SELECT * FROM user', function (err, result) {
