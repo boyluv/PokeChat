@@ -60,6 +60,7 @@ ALTER TABLE "replies" ADD CONSTRAINT "replies_fk0" FOREIGN KEY ("ref_convo_id") 
 ALTER TABLE "replies" ADD CONSTRAINT "replies_fk1" FOREIGN KEY ("rep_by") REFERENCES "users"("user_id");
 
 INSERT INTO categories VALUES (1,'education','where you can discuss educational problem');
+INSERT INTO categories (cat_name,cat_description) VALUES ('edsfducatdsafion','whersdafase you can discuss educational problem');
 
 -- INSERT INTO users VALUES (1,'huy','e19d5cd5af0378da05f63f891c7467af','\\001'); 
 -- INSERT INTO users VALUES (2,'tuan','865541678b41810342b917f8c79d5137','\\000');
