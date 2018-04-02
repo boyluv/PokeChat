@@ -496,11 +496,10 @@ app.delete('/request/remove/:id', function (request, response) {
 });
 
 //16
-app.get('/convoadd/:id', function (request, response) {
-  const id = parseInt(request.params.id);
+app.get('/convoadd', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      " select * from request WHERE CAST(req_receiver AS integer)  = " + id,
+      " select * from conversations ",
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
