@@ -524,7 +524,8 @@ app.get('/convoadd', function (request, response) {
             }));
           else{
             client.query(
-              " select * from conversations where convo_cat = "+convo_cat+" and convo_by = "+convo_by,
+              
+              " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
               function (err2, result2) {
                 done();
                 response.setHeader('Content-Type', 'application/json');
