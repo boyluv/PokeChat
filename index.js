@@ -524,100 +524,105 @@ app.get('/convoadd', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          if (result.rows.length > 0)
-            response.send(JSON.stringify({
-              status: 'success',
-              data: result.rows,
-              message: 'Return test file'
-            }));
-          else {
-            client.query(
-              " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
-              function (err2, result2) {
-                done();
-                response.setHeader('Content-Type', 'application/json');
-                if (err2) {
-                  response.send(JSON.stringify({
-                    status: 'error',
-                    data: err2,
-                    message: 'Request failed'
-                  }));
-                  console.error(err2);
-                  response.send("Error " + err2);
-                } else {
-                  client.query(
-                    " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-                    function (err, result) {
-                      done();
-                      response.setHeader('Content-Type', 'application/json');
-                      if (err) {
-                        response.send(JSON.stringify({
-                          status: 'error',
-                          data: err,
-                          message: 'Request failed'
-                        }));
-                        console.error(err);
-                        response.send("Error " + err);
-                      } else {
-                        if (result.rows.length > 0)
-                          //It's already have bro
-                          response.send(JSON.stringify({
-                            status: 'success',
-                            data: result.rows,
-                            message: 'Return test file'
-                          }));
-                        else {
-                          //Nope bro now it's time to insert it
-                          client.query(
-                            " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
-                            function (err2, result2) {
-                              done();
-                              response.setHeader('Content-Type', 'application/json');
-                              if (err2) {
-                                response.send(JSON.stringify({
-                                  status: 'error',
-                                  data: err2,
-                                  message: 'Request failed'
-                                }));
-                                console.error(err2);
-                                response.send("Error " + err2);
-                              } else {
-                                //Yeah bro you inserted it 
-                                client.query(
-                                  " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-                                  function (err4, result4) {
-                                    done();
-                                    response.setHeader('Content-Type', 'application/json');
-                                    if (err4) {
-                                      response.send(JSON.stringify({
-                                        status: 'error',
-                                        data: err4,
-                                        message: 'Request failed'
-                                      }));
-                                      console.error(err4);
-                                      response.send("Error " + err4);
-                                    } else {
-                                      if (result4.rows.length > 0)
-                                        response.send(JSON.stringify({
-                                          status: 'success',
-                                          data: result4.rows,
-                                          message: 'Nice bro , finally success!!'
-                                        }));
-                                    }
-                                  });
-                                //Done
-                              }
-                            }
-                          );
-                        }
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Return test file'}));
 
-                      }
-                    });
+          // if (result.rows.length > 0)
+          //   response.send(JSON.stringify({
+          //     status: 'success',
+          //     data: result.rows,
+          //     message: 'Return test file'
+          //   }));
+          // else {
+          //   client.query(
+          //     " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
+          //     function (err2, result2) {
+          //       done();
+          //       response.setHeader('Content-Type', 'application/json');
+          //       if (err2) {
+          //         response.send(JSON.stringify({
+          //           status: 'error',
+          //           data: err2,
+          //           message: 'Request failed'
+          //         }));
+          //         console.error(err2);
+          //         response.send("Error " + err2);
+          //       } else {
+          //         client.query(
+          //           " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
+          //           function (err, result) {
+          //             done();
+          //             response.setHeader('Content-Type', 'application/json');
+          //             if (err) {
+          //               response.send(JSON.stringify({
+          //                 status: 'error',
+          //                 data: err,
+          //                 message: 'Request failed'
+          //               }));
+          //               console.error(err);
+          //               response.send("Error " + err);
+          //             } else {
+          //               if (result.rows.length > 0)
+          //                 //It's already have bro
+          //                 response.send(JSON.stringify({
+          //                   status: 'success',
+          //                   data: result.rows,
+          //                   message: 'Return test file'
+          //                 }));
+          //               else {
+          //                 //Nope bro now it's time to insert it
+          //                 client.query(
+          //                   " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
+          //                   function (err2, result2) {
+          //                     done();
+          //                     response.setHeader('Content-Type', 'application/json');
+          //                     if (err2) {
+          //                       response.send(JSON.stringify({
+          //                         status: 'error',
+          //                         data: err2,
+          //                         message: 'Request failed'
+          //                       }));
+          //                       console.error(err2);
+          //                       response.send("Error " + err2);
+          //                     } else {
+          //                       //Yeah bro you inserted it 
+          //                       client.query(
+          //                         " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
+          //                         function (err4, result4) {
+          //                           done();
+          //                           response.setHeader('Content-Type', 'application/json');
+          //                           if (err4) {
+          //                             response.send(JSON.stringify({
+          //                               status: 'error',
+          //                               data: err4,
+          //                               message: 'Request failed'
+          //                             }));
+          //                             console.error(err4);
+          //                             response.send("Error " + err4);
+          //                           } else {
+          //                             if (result4.rows.length > 0)
+          //                               response.send(JSON.stringify({
+          //                                 status: 'success',
+          //                                 data: result4.rows,
+          //                                 message: 'Nice bro , finally success!!'
+          //                               }));
+          //                           }
+          //                         });
+          //                       //Done
+          //                     }
+          //                   }
+          //                 );
+          //               }
 
-                }
-              }
-            );
-          }
+          //             }
+          //           });
+
+          //       }
+          //     }
+          //   );
+          // }
 
         }
       });
