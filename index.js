@@ -412,11 +412,20 @@ app.get('/request/:id', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: 'Return test file'
-          }));
+          if(result.rows.length > 0 )
+            response.send(JSON.stringify({
+              status: 'success',
+              haveNotification: true,
+              data: result.rows,
+              message: 'Return test file'
+            }));
+          else  
+            response.send(JSON.stringify({
+              status: 'success',
+              haveNotification: false,              
+              data: result.rows,
+              message: 'Return test file'
+            }));
         }
       });
   });
