@@ -503,7 +503,7 @@ app.get('/convoadd', function (request, response) {
   } = request.query
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      " select * from conversations where convo_cat = 1 and convo_by = 1",
+      " select * from conversations where convo_cat = "+convo_cat+" and convo_by = "+convo_by,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
