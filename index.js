@@ -665,7 +665,7 @@ app.post('/cate/add/', function (request, response) {
                 } else {
                   response.send(JSON.stringify({
                     status: 'success',
-                    data: result2.rows,
+                    cat_id: result2.rows[0].cat_id,
                     message: 'Inserted'
                   }));
                 }
