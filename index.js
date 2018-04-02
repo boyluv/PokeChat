@@ -524,28 +524,33 @@ app.get('/convo/add', function (request, response) {
               message: 'Return test file'
             }));
           } else {
-            client.query(
-              "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP);",
-              function (err, result) {
-                done();
-                response.setHeader('Content-Type', 'application/json');
-                if (err) {
-                  response.send(JSON.stringify({
-                    status: 'error',
-                    data: err,
-                    message: 'Request failed'
-                  }));
-                  console.error(err);
-                  response.send("Error " + err);
-                } else {
-                  response.send(JSON.stringify({
-                    status: 'success',
-                    data: result.rows,
-                    message: 'Return test file'
-                  }));
-                }
-              }
-            )
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: 'Return test file'
+            }));
+            // client.query(
+            //   "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP);",
+            //   function (err, result) {
+            //     done();
+            //     response.setHeader('Content-Type', 'application/json');
+            //     if (err) {
+            //       response.send(JSON.stringify({
+            //         status: 'error',
+            //         data: err,
+            //         message: 'Request failed'
+            //       }));
+            //       console.error(err);
+            //       response.send("Error " + err);
+            //     } else {
+            //       response.send(JSON.stringify({
+            //         status: 'success',
+            //         data: result.rows,
+            //         message: 'Return test file'
+            //       }));
+            //     }
+            //   }
+            // )
           }
 
         }
