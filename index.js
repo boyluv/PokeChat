@@ -231,13 +231,13 @@ app.post('/user/add/', function (request, response) {
     name,
     pass,
     pb_key,
-    isUser
+    ref_cat_id
   } = request.query
 
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "INSERT INTO users (user_name,user_pw,pb_key,is_user) VALUES ('"+name+"','"+pass+"','"+pb_key+"','"+isUser+"')"
+      "INSERT INTO users (user_name,user_pw,pb_key,is_user) VALUES ('"+name+"','"+pass+"','"+pb_key+"','"+ref_cat_id+"')"
       , function (err, result) {
 
       done();
