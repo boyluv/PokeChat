@@ -131,11 +131,20 @@ app.get('/convo/:id', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: 'Return test file'
-          }));
+          if(result.rows.length == 0)
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              isEmpty: true,
+              message: 'Return test file'
+            }));
+            else
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              isEmpty: false,
+              message: 'Return test file'
+            }));
         }
       });
   });
