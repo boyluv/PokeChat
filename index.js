@@ -269,7 +269,7 @@ app.get('/user/login/', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "SELECT user_id from users where user_name ='"+name+"' and user_pw='"+pass+"'"
+      "SELECT user_id,ref_cat_id from users where user_name ='"+name+"' and user_pw='"+pass+"'"
       , function (err, result) {
       done();
       response.setHeader('Content-Type', 'application/json');
