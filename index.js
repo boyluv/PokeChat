@@ -146,7 +146,7 @@ app.get('/listconvo', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users " +
-      " INNER JOIN replies ON users.user_id = replies.rep_by " + 
+      " INNER JOIN replies ON users.user_id = replies.rep_by " +
       " ORDER BY rep_id ASC ",
       function (err, result) {
         done();
@@ -237,26 +237,26 @@ app.post('/user/add/', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('"+name+"','"+pass+"','"+pb_key+"','"+ref_cat_id+"')"
-      , function (err, result) {
+      "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + ref_cat_id + "')",
+      function (err, result) {
 
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: 'Request failed'
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          message: 'Inserted'
-        }));
-      }
-    });
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            message: 'Inserted'
+          }));
+        }
+      });
   });
 });
 
@@ -264,33 +264,36 @@ app.post('/user/add/', function (request, response) {
 //6--
 app.get('/user/login/', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  const {name,pass} = request.query
+  const {
+    name,
+    pass
+  } = request.query
 
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "SELECT user_id,ref_cat_id from users where user_name ='"+name+"' and user_pw='"+pass+"'"
-      , function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err || result.rows.length < 1) {
-        response.send(JSON.stringify({
-          status: 'error',
-          isSignin: false,
-          data: err,
-          message: 'Request failed'
-        }));
-        // console.error(err);
-        // response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          data: result.rows,
-          isSignin: true,
-          message: 'Here is your id User'
-        }));
-      }
-    });
+      "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err || result.rows.length < 1) {
+          response.send(JSON.stringify({
+            status: 'error',
+            isSignin: false,
+            data: err,
+            message: 'Request failed'
+          }));
+          // console.error(err);
+          // response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            isSignin: true,
+            message: 'Here is your id User'
+          }));
+        }
+      });
   });
 });
 
@@ -333,25 +336,25 @@ app.post('/user/replies/', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('"+rep_message+"',"+ref_convo_id+","+rep_by+",CURRENT_TIMESTAMP)"
-      , function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: 'Request failed'
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          message: 'Inserted'
-        }));
-      }
-    });
+      "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('" + rep_message + "'," + ref_convo_id + "," + rep_by + ",CURRENT_TIMESTAMP)",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            message: 'Inserted'
+          }));
+        }
+      });
   });
 });
 
@@ -399,7 +402,7 @@ app.get('/request/:id', function (request, response) {
   const id = parseInt(request.params.id);
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      " select * from request WHERE CAST(req_receiver AS integer)  = "+id,
+      " select * from request WHERE CAST(req_receiver AS integer)  = " + id,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -412,17 +415,17 @@ app.get('/request/:id', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          if(result.rows.length > 0 )
+          if (result.rows.length > 0)
             response.send(JSON.stringify({
               status: 'success',
               haveNotification: true,
               data: result.rows,
               message: 'Return test file'
             }));
-          else  
+          else
             response.send(JSON.stringify({
               status: 'success',
-              haveNotification: false,              
+              haveNotification: false,
               data: result.rows,
               message: 'Return test file'
             }));
@@ -442,25 +445,25 @@ app.post('/request/add', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "INSERT INTO request (req_sender,req_receiver,message) VALUES ("+req_sender+","+req_receiver+",'"+message+"');"
-      , function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: 'Request failed'
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          message: 'Inserted'
-        }));
-      }
-    });
+      "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + req_sender + "," + req_receiver + ",'" + message + "');",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            message: 'Inserted'
+          }));
+        }
+      });
   });
 });
 
@@ -495,10 +498,13 @@ app.delete('/request/remove/:id', function (request, response) {
 //15--Add convo and return id , input categories and user id
 //--Get all list conservation
 app.get('/convo/add', function (request, response) {
-  const {convo_by,convo_cat} = request.query
+  const {
+    convo_by,
+    convo_cat
+  } = request.query
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "select from conversations where convo_by = "+convo_by+" and convo_cat = "+convo_cat,
+      "select from conversations where convo_by = " + convo_by + " and convo_cat = " + convo_cat,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -511,38 +517,37 @@ app.get('/convo/add', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          if(result.row.length > 0){
+          if (result.rows.length > 0) {
             response.send(JSON.stringify({
               status: 'success',
               data: result.rows,
               message: 'Return test file'
             }));
-          }
-          else{
+          } else {
             client.query(
-              "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES ("+convo_cat+","+convo_by+",CURRENT_TIMESTAMP);",
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: 'Request failed'
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-            response.send(JSON.stringify({
-              status: 'success',
-              data: result.rows,
-              message: 'Return test file'
-            }));
-        }
-      }
+              "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP);",
+              function (err, result) {
+                done();
+                response.setHeader('Content-Type', 'application/json');
+                if (err) {
+                  response.send(JSON.stringify({
+                    status: 'error',
+                    data: err,
+                    message: 'Request failed'
+                  }));
+                  console.error(err);
+                  response.send("Error " + err);
+                } else {
+                  response.send(JSON.stringify({
+                    status: 'success',
+                    data: result.rows,
+                    message: 'Return test file'
+                  }));
+                }
+              }
             )
           }
-          
+
         }
       });
   });
