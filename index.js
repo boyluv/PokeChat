@@ -503,7 +503,7 @@ app.delete('/request/remove/:id', function (request, response) {
   });
 });
 
-//16
+//16 Add new conversation, or ignore if you have
 app.get('/convoadd', function (request, response) {
   const {
     convo_cat,
@@ -619,6 +619,59 @@ app.get('/convoadd', function (request, response) {
             );
           }
 
+        }
+      });
+  });
+});
+
+//17 Add new categories for admin
+//
+app.post('/cate/add/', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {
+    cat_name,
+    cat_description
+  } = request.query
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      "INSERT INTO categories (cat_name,cat_description) VALUES ('"+cat_name+"','"+cat_description+"')",
+      function (err, result) {
+
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+            client.query(
+              "select * from categories where cat_name = '"+cat_name+"' and cat_description = '"+cat_description+"' ",
+              function (err2, result2) {
+        
+                done();
+                response.setHeader('Content-Type', 'application/json');
+                if (err2) {
+                  response.send(JSON.stringify({
+                    status: 'error',
+                    data: err2,
+                    message: 'Request failed'
+                  }));
+                  console.error(err2);
+                  response.send("Error " + err2);
+                } else {
+                  response.send(JSON.stringify({
+                    status: 'success',
+                    data: result2,
+                    message: 'Inserted'
+                  }));
+                }
+              });
+          });
         }
       });
   });
