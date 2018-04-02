@@ -652,7 +652,6 @@ app.post('/cate/add/', function (request, response) {
             client.query(
               "select * from categories where cat_name = '"+cat_name+"' and cat_description = '"+cat_description+"' ",
               function (err2, result2) {
-        
                 done();
                 response.setHeader('Content-Type', 'application/json');
                 if (err2) {
@@ -666,7 +665,7 @@ app.post('/cate/add/', function (request, response) {
                 } else {
                   response.send(JSON.stringify({
                     status: 'success',
-                    data: result2,
+                    data: result2.rows,
                     message: 'Inserted'
                   }));
                 }
