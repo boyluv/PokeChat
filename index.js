@@ -499,7 +499,7 @@ app.delete('/request/remove/:id', function (request, response) {
 app.get('/convoadd', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      " select * from conversations ",
+      " select * from conversations where convo_cat = 1 and convo_by = 1",
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
