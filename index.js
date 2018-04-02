@@ -539,13 +539,12 @@ app.get('/convoadd', function (request, response) {
                 } else {
                   response.send(JSON.stringify({
                     status: 'He he nothing',
-                    data: null,
+                    data: result2.rows,
                     message: 'Request failed'
                   }));
                     
                 }
               }
-
             );
           }
             
