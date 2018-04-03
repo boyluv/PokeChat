@@ -512,7 +512,7 @@ app.post('/convoadd', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     response.send(JSON.stringify({
               status: 'error',
-              data: err,
+              data: "Hello",
               message: 'Request failed'
             }));
   });
