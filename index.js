@@ -504,7 +504,7 @@ app.delete('/request/remove/:id', function (request, response) {
 });
 
 //16 Add new conversation, or ignore if you have
-app.get('/convoadd', function (request, response) {
+app.post('/convoadd', function (request, response) {
   const {
     convo_cat,
     convo_by
