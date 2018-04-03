@@ -205,6 +205,46 @@ app.get('/admin', function (request, response) {
       });
   });
 });
+
+//--Get all user Admin id
+app.get('/checkconvo', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = 9 and convo_by = 7",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          if(result.rows.length == 0){
+            response.send(JSON.stringify({
+              status: 'success',
+              haveConnect: false,
+              data: result.rows,
+              message: 'Return test file'
+            }));
+          }
+          else{
+            response.send(JSON.stringify({
+              status: 'success',
+              haveConnect: true,
+              data: result.rows,
+              message: 'Return test file'
+            }));
+          }
+          
+        }
+      });
+  });
+});
+
 //--Get list conversation with categories with admin 
 app.get('/listconvo/cate', function (request, response) {
   const {
