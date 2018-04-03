@@ -211,6 +211,7 @@ app.get('/listconvo/cate', function (request, response) {
             response.send(JSON.stringify({
               status: 'success',
               data: result.rows,
+              isEmpty: false,              
               message: 'Return test file'
             }));
           }
