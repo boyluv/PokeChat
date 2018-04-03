@@ -550,10 +550,27 @@ app.post('/convoadd', function (request, response) {
                     }));
                   }
                   else{
-                    response.send(JSON.stringify({
-                      status: 'success',
-                      message: 'Something Happend'
-                    }));
+                    client.query(
+                      "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + req_sender + "," + req_receiver + ",'" + message + "');",
+                      function (err3, result3) {
+                        done();
+                        response.setHeader('Content-Type', 'application/json');
+                        if (err3) {
+                          response.send(JSON.stringify({
+                            status: 'error',
+                            data: err3,
+                            message: 'Request failed'
+                          }));
+                          console.error(err3);
+                          response.send("Error " + err3);
+                        } else {
+                          response.send(JSON.stringify({
+                            status: 'success',
+                            data: result3.rows,
+                            message: 'Here is your new inserted'
+                          }));
+                        }
+                      });
                   }
                   
 
