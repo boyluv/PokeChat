@@ -551,7 +551,7 @@ app.post('/convoadd', function (request, response) {
                   }
                   else{
                     client.query(
-                      "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + req_sender + "," + req_receiver + ",'" + message + "');",
+                      "select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
                       function (err3, result3) {
                         done();
                         response.setHeader('Content-Type', 'application/json');
