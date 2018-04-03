@@ -183,7 +183,7 @@ app.get('/listconvo', function (request, response) {
 app.get('/admin', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "select user_id from users where ref_cat_id != 1 ",
+      "select user_id,cat_name,cat_description from users,categories where ref_cat_id != 1 and ref_cat_id = cat_id;",
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
