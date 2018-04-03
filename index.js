@@ -531,7 +531,7 @@ app.post('/convoadd', function (request, response) {
             //Insert new value
             client.query(
               "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
-              function (err, result2) {
+              function (err2, result2) {
                 done();
                 response.setHeader('Content-Type', 'application/json');
                 if (err2) {
