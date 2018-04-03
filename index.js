@@ -541,7 +541,7 @@ app.get('/user/pbkey/', function (request, response) {
         } else {
           response.send(JSON.stringify({
             status: 'success',
-            data: result.rows,
+            data: result.rows[0].pb_key,
             message: 'Inserted'
           }));
         }
