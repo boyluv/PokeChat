@@ -527,7 +527,6 @@ app.post('/convoadd', function (request, response) {
           response.send("Error " + err);
         } else {
           if(result.rows.length == 0 ){
-
             //Insert new value
             client.query(
               "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
