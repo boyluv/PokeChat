@@ -179,6 +179,46 @@ app.get('/listconvo', function (request, response) {
   });
 });
 
+//--Get list conversation with categories with admin 
+app.get('/listconvo/cate', function (request, response) {
+  const {
+    convo_cat
+  } = request.query
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    client.query(
+      "select user_name,rep_by,rep_message,convo_id from (select * from conversations, (select rep_id,rep_message,replies.ref_convo_id,rep_by,rep_time from replies, (select Max(rep_time) as time,ref_convo_id from replies group by ref_convo_id) as table2 where replies.rep_time = table2.time and replies.ref_convo_id = table2.ref_convo_id) as table3 where conversations.convo_id = table3.ref_convo_id) as table4,users where table4.convo_cat = "+convo_cat+" and users.user_id=table4.rep_by",
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          if(result.rows.length == 0 ){
+            response.send(JSON.stringify({
+              status: 'success',
+              isEmpty: true,
+              data: result.rows,
+              message: 'Return test file'
+            }));
+          }
+          else{
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: 'Return test file'
+            }));
+          }
+          
+        }
+      });
+  });
+});
 //3--Get all user in system
 app.get('/users', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {

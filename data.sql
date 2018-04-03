@@ -73,9 +73,14 @@ INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (1,1,CURRENT_TI
 -- INSERT INTO replies (rep_id,rep_message,related_to_convo,rep_by,rep_time) VALUES
 -- (1,'hello',1,1,CURRENT_TIMESTAMP),(2,'hi',2,3,CURRENT_TIMESTAMP)
 -- ,(3,'hello, huy',1,2,CURRENT_TIMESTAMP),(4,'hello,binh',2,2,CURRENT_TIMESTAMP);
-INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES
+INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES 
 ('hello',1,1,CURRENT_TIMESTAMP),('hi',2,3,CURRENT_TIMESTAMP)
 ,('hello, huy',1,2,CURRENT_TIMESTAMP),('hello,binh',2,2,CURRENT_TIMESTAMP);
+
+--Important getlist conversation with newest message
+-- select * from replies, (select Max(rep_time) as time,ref_convo_id from replies group by ref_convo_id) as table2 where replies.rep_time = table2.time and replies.ref_convo_id = table2.ref_convo_id;
+--Important getlist conversation with categories id
+-- select user_name,rep_by,rep_message,convo_id from (select * from conversations, (select rep_id,rep_message,replies.ref_convo_id,rep_by,rep_time from replies, (select Max(rep_time) as time,ref_convo_id from replies group by ref_convo_id) as table2 where replies.rep_time = table2.time and replies.ref_convo_id = table2.ref_convo_id) as table3 where conversations.convo_id = table3.ref_convo_id) as table4,users where table4.convo_cat = 1 and users.user_id=table4.rep_by;
 
 -- SELECT tat ca messages cua 1 nguoi, noi voi ai, trong convo nao
 /*SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users
