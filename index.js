@@ -517,6 +517,38 @@ app.get('/key', function (request, response) {
 });
 
 
+//--Get oppen key with user id
+app.get('/user/pbkey/', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {
+    id
+  } = request.query
+  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+    client.query(
+      "select pb_key from users where user_id = "+id,
+      function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: 'Request failed'
+          }));
+          console.error(err);
+          response.send("Error " + err);
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Inserted'
+          }));
+        }
+      });
+  });
+});
+
 //11--Get all request with your id
 app.get('/request/:id', function (request, response) {
   const id = parseInt(request.params.id);
