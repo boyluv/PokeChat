@@ -10,7 +10,7 @@ CREATE TABLE "request" (
 	"req_id" serial NOT NULL,
 	"req_sender" integer NOT NULL,
 	"req_receiver" integer NOT NULL,	
-	"message" varchar(255) NOT NULL,
+	"message" varchar(500) NOT NULL,
 	CONSTRAINT request_pk PRIMARY KEY ("req_id")
 ) WITH (
   OIDS=FALSE
