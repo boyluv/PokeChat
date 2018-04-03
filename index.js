@@ -527,17 +527,44 @@ app.post('/convoadd', function (request, response) {
           response.send("Error " + err);
         } else {
           if(result.rows.length == 0 ){
-            response.send(JSON.stringify({
-              status: 'success',
-              data: 'isEmpty',
-              message: 'Inserted'
-            }));
+
+            //Insert new value
+            client.query(
+              "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
+              function (err, result2) {
+                done();
+                response.setHeader('Content-Type', 'application/json');
+                if (err2) {
+                  response.send(JSON.stringify({
+                    status: 'error',
+                    data: err2,
+                    message: 'Request failed'
+                  }));
+                  console.error(err2);
+                  response.send("Error " + err2);
+                } else {
+                  if(result2.rows.length > 0 ){
+                    response.send(JSON.stringify({
+                      status: 'success',
+                      message: 'Inserted inside'
+                    }));
+                  }
+                  else{
+                    response.send(JSON.stringify({
+                      status: 'success',
+                      message: 'Something Happend'
+                    }));
+                  }
+                  
+
+                }
+              });
           }
           else
           response.send(JSON.stringify({
             status: 'success',
             data: result.rows,
-            message: 'Inserted'
+            message: 'Already have'
           }));
           
         }
