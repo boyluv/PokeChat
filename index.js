@@ -503,21 +503,55 @@ app.delete('/request/remove/:id', function (request, response) {
   });
 });
 
-//16 Add new conversation, or ignore if you have
+//16 New
 app.post('/convoadd', function (request, response) {
+  // const idUser = parseInt(request.params.id);
   const {
     convo_cat,
     convo_by
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    response.send(JSON.stringify({
-              status: 'error',
-              data: "Hello",
-              message: 'Request failed'
-            }));
-  });
-}
-
+  response.send(JSON.stringify({
+    status: 'success',
+    message: 'Inserted'
+  }));
+  // pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+  //   // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+  //   client.query(
+  //     "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + req_sender + "," + req_receiver + ",'" + message + "');",
+  //     function (err, result) {
+  //       done();
+  //       response.setHeader('Content-Type', 'application/json');
+  //       if (err) {
+  //         response.send(JSON.stringify({
+  //           status: 'error',
+  //           data: err,
+  //           message: 'Request failed'
+  //         }));
+  //         console.error(err);
+  //         response.send("Error " + err);
+  //       } else {
+  //         response.send(JSON.stringify({
+  //           status: 'success',
+  //           message: 'Inserted'
+  //         }));
+  //       }
+  //     });
+  // });
+});
+//16 Add new conversation, or ignore if you have
+// app.post('/convoadd', function (request, response) {
+//   const {
+//     convo_cat,
+//     convo_by
+//   } = request.query
+//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+//     response.send(JSON.stringify({
+//               status: 'error',
+//               data: "Hello",
+//               message: 'Request failed'
+//             }));
+//   });
+// }
 
     // client.query(
     //   " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
