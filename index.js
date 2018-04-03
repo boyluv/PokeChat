@@ -526,10 +526,20 @@ app.post('/convoadd', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
+          if(result.rows.length == 0 ){
+            response.send(JSON.stringify({
+              status: 'success',
+              data: 'isEmpty',
+              message: 'Inserted'
+            }));
+          }
+          else
           response.send(JSON.stringify({
             status: 'success',
+            data: result.rows,
             message: 'Inserted'
           }));
+          
         }
       });
   });
