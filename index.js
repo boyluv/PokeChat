@@ -746,37 +746,44 @@ app.get('/request/:id', function (request, response) {
   
 });
 
-//12--add new replies
+//17--Add new replies
 app.post('/request/add', function (request, response) {
   // const idUser = parseInt(request.params.id);
+  response.setHeader('Content-Type', 'application/json');  
   const {
     req_sender,
     req_receiver,
     message
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query(
-      "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + req_sender + "," + req_receiver + ",'" + message + "');",
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            message: 'Inserted'
-          }));
-        }
-      });
-  });
+  if(req_sender && req_receiver && message && Number.isInteger(parseInt(req_receiver)) && Number.isInteger(parseInt(req_sender))){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      client.query(
+        "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + parseInt(req_sender) + "," + parseInt(req_receiver) + ",'" + message + "');",
+        function (err, result) {
+          done();
+          if (err) {
+            response.send(JSON.stringify({
+              status: 'error',
+              data: err,
+              message: messFailed
+            }));
+          } else {
+            response.send(JSON.stringify({
+              status: 'success',
+              message: 'Inserted'
+            }));
+          }
+        });
+    });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //14--delete replies with id
