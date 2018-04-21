@@ -438,27 +438,57 @@ app.post('/user/add/', function (request, response) {
       message: messSuccess
     }));
 
-    // pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    //   client.query(
-    //     "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + ref_cat_id + "')",
-    //     function (err, result) {
-    //       done();
-    //       if (err) {
-    //         response.send(JSON.stringify({
-    //           status: 'error',
-    //           data: err,
-    //           message: messFailed
-    //         }));
-    //         console.error(err);
-    //         response.send("Error " + err);
-    //       } else {
-    //         response.send(JSON.stringify({
-    //           status: 'success',
-    //           message: 'Inserted'
-    //         }));
-    //       }
-    //     });
-    // });
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      client.query(
+        "select user_id from users where user_name = '" + name + "' and user_pw = '" + pass + "'",
+        function (err, result) {
+          done();
+          if (err) {
+            response.send(JSON.stringify({
+              status: 'error',
+              data: err,
+              message: messFailed
+            }));
+            console.error(err);
+            response.send("Error " + err);
+          } else {
+            if (result.rows.length == 0) {
+              pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+                client.query(
+                  "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + Number.isInteger(parseInt(ref_cat_id)) + "')",
+                  function (err, result) {
+                    done();
+                    if (err) {
+                      response.send(JSON.stringify({
+                        status: 'error',
+                        data: err,
+                        message: messFailed
+                      }));
+                      console.error(err);
+                      response.send("Error " + err);
+                    } else {
+                      response.send(JSON.stringify({
+                        status: 'success',
+                        isSinup: false,
+                        message: 'Inserted'
+                      }));
+                    }
+                  });
+              });
+            } else {
+              response.send(JSON.stringify({
+                status: 'failed',
+                isSinup: true,
+                data: result.rows,
+                message: 'User is already have'
+              }));
+            }
+
+
+          }
+        });
+    });
+
   } else {
 
     response.send(JSON.stringify({
