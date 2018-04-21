@@ -172,6 +172,7 @@ app.get('/convo/:id', function (request, response) {
 
 //2--Get all list conservation
 app.get('/listconvo', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users " +
@@ -179,12 +180,11 @@ app.get('/listconvo', function (request, response) {
       " ORDER BY rep_id ASC ",
       function (err, result) {
         done();
-        response.setHeader('Content-Type', 'application/json');
         if (err) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -192,7 +192,7 @@ app.get('/listconvo', function (request, response) {
           response.send(JSON.stringify({
             status: 'success',
             data: result.rows,
-            message: 'Return test file'
+            message: messSuccess
           }));
         }
       });
