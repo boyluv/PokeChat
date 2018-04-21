@@ -825,17 +825,17 @@ app.post('/convoadd', function (request, response) {
   // const idUser = parseInt(request.params.id);
   response.setHeader('Content-Type', 'application/json');  
   const {
-    convo_catValue,
-    convo_byValue
+    convo_cat,
+    convo_by
   } = request.query
 
-  var convo_cat = parseInt(convo_catValue)
-  var convo_by = parseInt(convo_byValue)
+  var convo_catValue = parseInt(convo_cat)
+  var convo_byValue = parseInt(convo_by)
   
-  if(convo_cat && convo_by && Number.isInteger(convo_by) && Number.isInteger(convo_cat)){
+  if(convo_catValue && convo_byValue && Number.isInteger(convo_byValue) && Number.isInteger(convo_catValue)){
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
-        " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
+        " select * from conversations where convo_cat = " + convo_catValue + " and convo_by = " + convo_byValue,
         function (err, result) {
           done();
           if (err) {
@@ -848,7 +848,7 @@ app.post('/convoadd', function (request, response) {
             if (result.rows.length == 0) {
               //Insert new value
               client.query(
-                "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
+                "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_catValue + "," + convo_byValue + ",CURRENT_TIMESTAMP)",
                 function (err2, result2) {
                   done();
                   if (err2) {
@@ -865,7 +865,7 @@ app.post('/convoadd', function (request, response) {
                       }));
                     } else {
                       client.query(
-                        "select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
+                        "select * from conversations where convo_cat = " + convo_catValue + " and convo_by = " + convo_byValue,
                         function (err3, result3) {
                           done();
                           if (err3) {
