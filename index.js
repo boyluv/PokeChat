@@ -238,12 +238,14 @@ app.get('/checkconvo', function (request, response) {
     adminId,
     userId
   } = request.query
+  var adminIdValue = parseInt(adminId);
+  var userIdValue = parseInt(userId);
   
-  if (Number.isInteger(parseInt(adminId))) {
-    if (Number.isInteger(parseInt(userId))) {
+  if (Number.isInteger(adminIdValue)) {
+    if (Number.isInteger(userIdValue)) {
       pg.connect(process.env.DATABASE_URL, function (err, client, done) {
         client.query(
-          "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = " + adminId + " and convo_by = " + userId,
+          "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = " + adminIdValue + " and convo_by = " + userIdValue,
           function (err, result) {
             done();
             if (err) {
@@ -288,7 +290,7 @@ app.get('/checkconvo', function (request, response) {
     response.send(JSON.stringify({
       status: 'success',
       haveConnect: false,
-      data: 'admin id is not number' + adminId,
+      data: 'admin id is not number',
       message: messFailed
     }));
   }
