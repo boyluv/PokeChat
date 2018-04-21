@@ -571,23 +571,23 @@ app.delete('/user/remove/:id', function (request, response) {
   
 });
 
-//11--Insert new replies
+//11--Insert new replies to conservation
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
+  response.setHeader('Content-Type', 'application/json');  
   const {
     rep_message,
     ref_convo_id,
     rep_by
   } = request.query
 
-  if(rep_message && ref_convo_id && rep_by && Number.isInteger(parseInt(ref_convo_id))){
+  if(rep_message && ref_convo_id && rep_by && Number.isInteger(parseInt(rep_by))  && Number.isInteger(parseInt(ref_convo_id))){
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
       client.query(
-        "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('" + rep_message + "'," + parseInt(ref_convo_id) + "," + rep_by + ",CURRENT_TIMESTAMP)",
+        "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('" + rep_message + "'," + parseInt(ref_convo_id) + "," + parseInt(rep_by) + ",CURRENT_TIMESTAMP)",
         function (err, result) {
           done();
-          response.setHeader('Content-Type', 'application/json');
           if (err) {
             response.send(JSON.stringify({
               status: 'error',
@@ -613,32 +613,40 @@ app.post('/user/replies/', function (request, response) {
   
 });
 
-//9--Remove message with id
+//12--Remove message with id
 app.delete('/replies/remove/:id', function (request, response) {
   const idRep = parseInt(request.params.id);
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // SELECT * FROM categories 
-    // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
-    client.query('DELETE from replies where rep_id = ' + idRep, function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: messFailed
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          data: result.rows,
-          message: 'Remove success'
-        }));
-      }
+  if(Number.isInteger(idRep)){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      // SELECT * FROM categories 
+      // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
+      client.query('DELETE from replies where rep_id = ' + idRep, function (err, result) {
+        done();
+        response.setHeader('Content-Type', 'application/json');
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: messFailed
+          }));
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Remove success'
+          }));
+        }
+      });
     });
-  });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //10--Get key to crypto
