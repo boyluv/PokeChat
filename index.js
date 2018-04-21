@@ -38,7 +38,7 @@ app.get('/db', function (request, response) {
           data: result.rows,
           message: 'Return test file'
         }));
-      } 
+      }
     });
   });
 });
@@ -112,19 +112,18 @@ app.post('/db/add/', function (request, response) {
 
 //1--Get a conservation with id
 app.get('/convo/:id', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
-  var convo_id = 1;  
-  try{
-    convo_id = parseInt(request.params.id);    
-  }
-  catch(err){
+  response.setHeader('Content-Type', 'application/json');
+  var convo_id = 1;
+  try {
+    convo_id = parseInt(request.params.id);
+  } catch (err) {
     response.send(JSON.stringify({
       status: 'error',
       data: err,
       message: messFailed
     }));
   }
-  if(Number.isInteger(convo_id)){
+  if (Number.isInteger(convo_id)) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         "SELECT users.user_name,replies.rep_message FROM replies " +
@@ -159,20 +158,19 @@ app.get('/convo/:id', function (request, response) {
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'Wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //2--Get all list conservation
 app.get('/listconvo', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT users.user_name,replies.rep_message,replies.ref_convo_id FROM users " +
@@ -199,10 +197,10 @@ app.get('/listconvo', function (request, response) {
   });
 });
 
-//3--Get all user Admin id
+//3--Get all user Admin detail
 app.get('/admin', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    response.setHeader('Content-Type', 'application/json');    
+    response.setHeader('Content-Type', 'application/json');
     client.query(
       "select user_id,cat_name,cat_description from users,categories where ref_cat_id != 1 and ref_cat_id = cat_id;",
       function (err, result) {
@@ -217,63 +215,84 @@ app.get('/admin', function (request, response) {
           response.send("Error " + err);
         } else {
           if (result.rows.length == 0)
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: messNoData
-          }));
-        else
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: messSuccess
-          }));
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: messNoData
+            }));
+          else
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: messSuccess
+            }));
         }
       });
   });
 });
 
-//--Get all user Admin id
+//4--Check connect conversation between user and admin
 app.get('/checkconvo', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   const {
     adminId,
     userId
   } = request.query
-
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query(
-      "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = " + adminId + " and convo_by = " + userId,
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          if (result.rows.length == 0) {
-            response.send(JSON.stringify({
-              status: 'success',
-              haveConnect: false,
-              data: result.rows,
-              message: 'Return test file'
-            }));
-          } else {
-            response.send(JSON.stringify({
-              status: 'success',
-              haveConnect: true,
-              data: result.rows,
-              message: 'Return test file'
-            }));
-          }
-
-        }
+  
+  if (Number.isInteger(adminId)) {
+    if (Number.isInteger(userId)) {
+      pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+        client.query(
+          "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = " + adminId + " and convo_by = " + userId,
+          function (err, result) {
+            done();
+            if (err) {
+              response.send(JSON.stringify({
+                status: 'error',
+                data: err,
+                message: messFailed
+              }));
+              console.error(err);
+              response.send("Error " + err);
+            } else {
+              if (result.rows.length == 0) {
+                response.send(JSON.stringify({
+                  status: 'success',
+                  haveConnect: false,
+                  data: result.rows,
+                  message: messNoData
+                }));
+              } else {
+                response.send(JSON.stringify({
+                  status: 'success',
+                  haveConnect: true,
+                  data: result.rows,
+                  message: messSuccess
+                }));
+              }
+    
+            }
+          });
       });
-  });
+    }
+    else{
+      response.send(JSON.stringify({
+        status: 'success',
+        haveConnect: false,
+        data: 'user id is not number',
+        message: messFailed
+      }));
+    }
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'success',
+      haveConnect: false,
+      data: 'admin id is not number',
+      message: messFailed
+    }));
+  }
+  
 });
 
 
