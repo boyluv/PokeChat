@@ -4,6 +4,12 @@ const PORT = process.env.PORT || 5000
 
 const app = express()
 
+const messFailed = 'Request failed'
+const messNoData = 'There is no data'
+const messSuccess = 'Request data success'
+
+//Test example server
+//Start
 app.get('/',
   (req, res) => {
     res.send("Hello super new World!!!!!!!!!!!!!")
@@ -100,6 +106,10 @@ app.post('/db/add/', function (request, response) {
   });
 });
 
+//Test example server
+//End
+
+
 //1--Get One conservation with  id
 app.get('/convo/:id', function (request, response) {
   const convo_id = parseInt(request.params.id);
@@ -115,7 +125,7 @@ app.get('/convo/:id', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -125,14 +135,14 @@ app.get('/convo/:id', function (request, response) {
               status: 'success',
               data: result.rows,
               isEmpty: true,
-              message: 'Return test file'
+              message: messNoData
             }));
           else
             response.send(JSON.stringify({
               status: 'success',
               data: result.rows,
               isEmpty: false,
-              message: 'Return test file'
+              message: messSuccess
             }));
         }
       });
