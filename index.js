@@ -432,12 +432,6 @@ app.post('/user/add/', function (request, response) {
 
   if (name && pass && pb_key && ref_cat_id && Number.isInteger(parseInt(ref_cat_id))) {
     //select user_id from users where user_name = 'test42dfsdfgsdfg' and user_pw = 'Hellosfdgdfgdf'
-    response.send(JSON.stringify({
-      status: 'success',
-      data: 'inside',
-      message: messSuccess
-    }));
-
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         "select user_id from users where user_name = '" + name + "' and user_pw = '" + pass + "'",
