@@ -832,7 +832,7 @@ app.post('/convoadd', function (request, response) {
   var convo_cat = parseInt(convo_catValue)
   var convo_by = parseInt(convo_byValue)
   
-  if(convo_catValue && convo_byValue && Number.isInteger(convo_by) && Number.isInteger(convo_cat)){
+  if(convo_cat && convo_by && Number.isInteger(convo_by) && Number.isInteger(convo_cat)){
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
