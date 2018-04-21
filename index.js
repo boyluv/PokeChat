@@ -450,7 +450,7 @@ app.post('/user/add/', function (request, response) {
             if (result.rows.length == 0) {
               pg.connect(process.env.DATABASE_URL, function (err, client, done) {
                 client.query(
-                  "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + Number.isInteger(parseInt(ref_cat_id)) + "')",
+                  "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + parseInt(ref_cat_id) + "')",
                   function (err, result) {
                     done();
                     if (err) {
