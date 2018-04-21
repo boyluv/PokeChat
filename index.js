@@ -786,32 +786,38 @@ app.post('/request/add', function (request, response) {
   
 });
 
-//14--delete replies with id
+//18--delete replies with id
 app.delete('/request/remove/:id', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   const idReq = parseInt(request.params.id);
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // SELECT * FROM categories 
-    // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
-    client.query('DELETE FROM request WHERE CAST(req_receiver AS integer)  =' + idReq, function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: messFailed
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          data: result.rows,
-          message: 'Remove success'
-        }));
-      }
+  if(Number.isInteger(idReq)){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {  
+      client.query('DELETE FROM request WHERE CAST(req_receiver AS integer)  =' + idReq, function (err, result) {
+        done();
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: messFailed
+          }));
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Remove success'
+          }));
+        }
+      });
     });
-  });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //16 New
