@@ -441,6 +441,7 @@ app.post('/user/add/', function (request, response) {
           if (err) {
             response.send(JSON.stringify({
               status: 'error',
+              isSinup: true,              
               data: err,
               message: messFailed
             }));
@@ -456,6 +457,7 @@ app.post('/user/add/', function (request, response) {
                     if (err) {
                       response.send(JSON.stringify({
                         status: 'error why???',
+                        isSinup: true,                        
                         data: err,
                         message: messFailed
                       }));
@@ -488,6 +490,7 @@ app.post('/user/add/', function (request, response) {
 
     response.send(JSON.stringify({
       status: 'success',
+      isSinup: true,      
       data: 'Wrong input',
       message: messFailed
     }));
@@ -496,7 +499,7 @@ app.post('/user/add/', function (request, response) {
 });
 
 //Get user id if sign in success
-//6--
+//9--
 app.get('/user/login/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
@@ -505,12 +508,12 @@ app.get('/user/login/', function (request, response) {
   } = request.query
 
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    response.setHeader('Content-Type', 'application/json');    
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
       "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
       function (err, result) {
         done();
-        response.setHeader('Content-Type', 'application/json');
         if (err || result.rows.length < 1) {
           response.send(JSON.stringify({
             status: 'error',
@@ -532,32 +535,40 @@ app.get('/user/login/', function (request, response) {
   });
 });
 
-//7--Remove user with id
+//10--Remove user with id
 app.delete('/user/remove/:id', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   const idUser = parseInt(request.params.id);
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // SELECT * FROM categories 
-    // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
-    client.query('DELETE from users where user_id = ' + idUser, function (err, result) {
-      done();
-      response.setHeader('Content-Type', 'application/json');
-      if (err) {
-        response.send(JSON.stringify({
-          status: 'error',
-          data: err,
-          message: messFailed
-        }));
-        console.error(err);
-        response.send("Error " + err);
-      } else {
-        response.send(JSON.stringify({
-          status: 'success',
-          data: result.rows,
-          message: 'Remove success'
-        }));
-      }
+  if(Number.isInteger(idUser)){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      // SELECT * FROM categories 
+      // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
+      client.query('DELETE from users where user_id = ' + idUser, function (err, result) {
+        done();
+        if (err) {
+          response.send(JSON.stringify({
+            status: 'error',
+            data: err,
+            message: messFailed
+          }));
+        } else {
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            message: 'Remove success'
+          }));
+        }
+      });
     });
-  });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //8--Insert new replies
