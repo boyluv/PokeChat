@@ -571,7 +571,7 @@ app.delete('/user/remove/:id', function (request, response) {
   
 });
 
-//8--Insert new replies
+//11--Insert new replies
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
   const {
@@ -579,29 +579,38 @@ app.post('/user/replies/', function (request, response) {
     ref_convo_id,
     rep_by
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query(
-      "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('" + rep_message + "'," + ref_convo_id + "," + rep_by + ",CURRENT_TIMESTAMP)",
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            message: 'Inserted'
-          }));
-        }
-      });
-  });
+
+  if(rep_message && ref_convo_id && rep_by && Number.isInteger(parseInt(ref_convo_id))){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+      client.query(
+        "INSERT INTO replies (rep_message,ref_convo_id,rep_by,rep_time) VALUES ('" + rep_message + "'," + parseInt(ref_convo_id) + "," + rep_by + ",CURRENT_TIMESTAMP)",
+        function (err, result) {
+          done();
+          response.setHeader('Content-Type', 'application/json');
+          if (err) {
+            response.send(JSON.stringify({
+              status: 'error',
+              data: err,
+              message: messFailed
+            }));
+          } else {
+            response.send(JSON.stringify({
+              status: 'success',
+              message: 'Inserted'
+            }));
+          }
+        });
+    });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //9--Remove message with id
