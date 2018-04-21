@@ -233,14 +233,14 @@ app.get('/admin', function (request, response) {
 
 //4--Check connect conversation between user and admin
 app.get('/checkconvo', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     adminId,
     userId
   } = request.query
   var adminIdValue = parseInt(adminId);
   var userIdValue = parseInt(userId);
-  
+
   if (Number.isInteger(adminIdValue)) {
     if (Number.isInteger(userIdValue)) {
       pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -272,12 +272,11 @@ app.get('/checkconvo', function (request, response) {
                   message: messSuccess
                 }));
               }
-    
+
             }
           });
       });
-    }
-    else{
+    } else {
       response.send(JSON.stringify({
         status: 'success',
         haveConnect: false,
@@ -285,8 +284,7 @@ app.get('/checkconvo', function (request, response) {
         message: messFailed
       }));
     }
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'success',
       haveConnect: false,
@@ -294,18 +292,18 @@ app.get('/checkconvo', function (request, response) {
       message: messFailed
     }));
   }
-  
+
 });
 
 
 //5--Get list conversation with categories with admin 
 app.get('/listconvo/cate', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     convo_cat
   } = request.query
-  var convo_catValue = parseInt(convo_cat);  
-  if(Number.isInteger(convo_catValue)){
+  var convo_catValue = parseInt(convo_cat);
+  if (Number.isInteger(convo_catValue)) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         "select user_name,rep_by,rep_message,convo_id from (select * from conversations, (select rep_id,rep_message,replies.ref_convo_id,rep_by,rep_time from replies, (select Max(rep_time) as time,ref_convo_id from replies group by ref_convo_id) as table2 where replies.rep_time = table2.time and replies.ref_convo_id = table2.ref_convo_id) as table3 where conversations.convo_id = table3.ref_convo_id) as table4,users where table4.convo_cat = " + convo_catValue + " and users.user_id=table4.rep_by",
@@ -314,7 +312,7 @@ app.get('/listconvo/cate', function (request, response) {
           if (err) {
             response.send(JSON.stringify({
               status: 'error',
-              isEmpty: true,              
+              isEmpty: true,
               data: err,
               message: messFailed
             }));
@@ -339,22 +337,21 @@ app.get('/listconvo/cate', function (request, response) {
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'success',
       data: 'convo_cat is not number',
-      isEmpty: true,      
+      isEmpty: true,
       message: messFailed
     }));
   }
-  
+
 });
 
 
 //6--Get all user in system
 app.get('/users', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT * FROM users ",
@@ -389,7 +386,7 @@ app.get('/users', function (request, response) {
 
 //7--Get all catergories in system
 app.get('/categories', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT * FROM categories ",
@@ -423,36 +420,54 @@ app.get('/categories', function (request, response) {
   });
 });
 
-//5--Insert new user
+//8--Insert new user
 app.post('/user/add/', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     name,
     pass,
     pb_key,
     ref_cat_id
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query(
-      "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + ref_cat_id + "')",
-      function (err, result) {
-        done();
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            message: 'Inserted'
-          }));
-        }
-      });
-  });
+
+  if (name && pass && pb_key && ref_cat_id && Number.isInteger(parseInt(ref_cat_id))) {
+    //select user_id from users where user_name = 'test42dfsdfgsdfg' and user_pw = 'Hellosfdgdfgdf'
+    response.send(JSON.stringify({
+      status: 'success',
+      data: 'inside',
+      message: messSuccess
+    }));
+
+    // pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    //   client.query(
+    //     "INSERT INTO users (user_name,user_pw,pb_key,ref_cat_id) VALUES ('" + name + "','" + pass + "','" + pb_key + "','" + ref_cat_id + "')",
+    //     function (err, result) {
+    //       done();
+    //       if (err) {
+    //         response.send(JSON.stringify({
+    //           status: 'error',
+    //           data: err,
+    //           message: messFailed
+    //         }));
+    //         console.error(err);
+    //         response.send("Error " + err);
+    //       } else {
+    //         response.send(JSON.stringify({
+    //           status: 'success',
+    //           message: 'Inserted'
+    //         }));
+    //       }
+    //     });
+    // });
+  } else {
+
+    response.send(JSON.stringify({
+      status: 'success',
+      data: 'Wrong input',
+      message: messFailed
+    }));
+  }
+
 });
 
 //Get user id if sign in success
