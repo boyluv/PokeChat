@@ -545,7 +545,7 @@ app.delete('/user/remove/:id', function (request, response) {
       // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
       client.query('DELETE from users where user_id = ' + idUser, function (err, result) {
         done();
-        if (err) {
+        if (err || result.rows.length < 1 ) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
