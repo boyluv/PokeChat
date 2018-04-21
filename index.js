@@ -430,7 +430,7 @@ app.post('/user/add/', function (request, response) {
     ref_cat_id
   } = request.query
 
-  
+
   if (name && pass && pb_key && ref_cat_id && Number.isInteger(parseInt(ref_cat_id))) {
     //select user_id from users where user_name = 'test42dfsdfgsdfg' and user_pw = 'Hellosfdgdfgdf'
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -455,7 +455,7 @@ app.post('/user/add/', function (request, response) {
                     done();
                     if (err) {
                       response.send(JSON.stringify({
-                        status: 'error',
+                        status: 'error why???',
                         data: err,
                         message: messFailed
                       }));
