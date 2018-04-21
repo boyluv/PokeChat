@@ -112,41 +112,60 @@ app.post('/db/add/', function (request, response) {
 
 //1--Get One conservation with  id
 app.get('/convo/:id', function (request, response) {
-  const convo_id = parseInt(request.params.id);
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query(
-      "SELECT users.user_name,replies.rep_message FROM replies " +
-      " INNER JOIN users ON replies.rep_by = users.user_id " +
-      " WHERE ref_convo_id = " + convo_id + " ORDER BY rep_id ASC ",
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          if (result.rows.length == 0)
+  try{
+    const convo_id = parseInt(request.params.id);
+  }
+  catch(err){
+    response.send(JSON.stringify({
+      status: 'error',
+      data: err,
+      message: messFailed
+    }));
+  }
+  if(Number.isInteger(convo_id)){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      client.query(
+        "SELECT users.user_name,replies.rep_message FROM replies " +
+        " INNER JOIN users ON replies.rep_by = users.user_id " +
+        " WHERE ref_convo_id = " + convo_id + " ORDER BY rep_id ASC ",
+        function (err, result) {
+          done();
+          response.setHeader('Content-Type', 'application/json');
+          if (err) {
             response.send(JSON.stringify({
-              status: 'success',
-              data: result.rows,
-              isEmpty: true,
-              message: messNoData
+              status: 'error',
+              data: err,
+              message: messFailed
             }));
-          else
-            response.send(JSON.stringify({
-              status: 'success',
-              data: result.rows,
-              isEmpty: false,
-              message: messSuccess
-            }));
-        }
-      });
-  });
+            console.error(err);
+            response.send("Error " + err);
+          } else {
+            if (result.rows.length == 0)
+              response.send(JSON.stringify({
+                status: 'success',
+                data: result.rows,
+                isEmpty: true,
+                message: messNoData
+              }));
+            else
+              response.send(JSON.stringify({
+                status: 'success',
+                data: result.rows,
+                isEmpty: false,
+                message: messSuccess
+              }));
+          }
+        });
+    });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'Wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //2--Get all list conservation
