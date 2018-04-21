@@ -820,7 +820,7 @@ app.delete('/request/remove/:id', function (request, response) {
   
 });
 
-//19 New
+//19 Add conversation
 app.post('/convoadd', function (request, response) {
   // const idUser = parseInt(request.params.id);
   response.setHeader('Content-Type', 'application/json');  
@@ -910,53 +910,58 @@ app.post('/convoadd', function (request, response) {
 //17 Add new categories for admin
 //
 app.post('/cate/add/', function (request, response) {
-  // const idUser = parseInt(request.params.id);
+  response.setHeader('Content-Type', 'application/json');  
   const {
     cat_name,
     cat_description
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query(
-      "INSERT INTO categories (cat_name,cat_description) VALUES ('" + cat_name + "','" + cat_description + "')",
-      function (err, result) {
-
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-            client.query(
-              "select * from categories where cat_name = '" + cat_name + "' and cat_description = '" + cat_description + "' ",
-              function (err2, result2) {
-                done();
-                response.setHeader('Content-Type', 'application/json');
-                if (err2) {
-                  response.send(JSON.stringify({
-                    status: 'error',
-                    data: err2,
-                    message: messFailed
-                  }));
-                  console.error(err2);
-                  response.send("Error " + err2);
-                } else {
-                  response.send(JSON.stringify({
-                    status: 'success',
-                    cat_id: result2.rows[0].cat_id,
-                    message: 'Inserted'
-                  }));
-                }
-              });
-          });
-        }
-      });
-  });
+  if(cat_name && cat_description){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      client.query(
+        "INSERT INTO categories (cat_name,cat_description) VALUES ('" + cat_name + "','" + cat_description + "')",
+        function (err, result) {
+          done();
+          response.setHeader('Content-Type', 'application/json');
+          if (err) {
+            response.send(JSON.stringify({
+              status: 'error',
+              data: err,
+              message: messFailed
+            }));
+            
+          } else {
+            pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+              client.query(
+                "select * from categories where cat_name = '" + cat_name + "' and cat_description = '" + cat_description + "' ",
+                function (err2, result2) {
+                  done();
+                  if (err2) {
+                    response.send(JSON.stringify({
+                      status: 'error',
+                      data: err2,
+                      message: messFailed
+                    }));
+                  } else {
+                    response.send(JSON.stringify({
+                      status: 'success',
+                      cat_id: result2.rows[0].cat_id,
+                      message: 'Inserted'
+                    }));
+                  }
+                });
+            });
+          }
+        });
+    });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'Missing input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 
