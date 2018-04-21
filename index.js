@@ -615,6 +615,7 @@ app.post('/user/replies/', function (request, response) {
 
 //12--Remove message with id
 app.delete('/replies/remove/:id', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   const idRep = parseInt(request.params.id);
   if(Number.isInteger(idRep)){
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
@@ -622,7 +623,6 @@ app.delete('/replies/remove/:id', function (request, response) {
       // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
       client.query('DELETE from replies where rep_id = ' + idRep, function (err, result) {
         done();
-        response.setHeader('Content-Type', 'application/json');
         if (err) {
           response.send(JSON.stringify({
             status: 'error',
@@ -649,7 +649,7 @@ app.delete('/replies/remove/:id', function (request, response) {
   
 });
 
-//10--Get key to crypto
+//14--Get key to crypto
 app.get('/key', function (request, response) {
   response.setHeader('Content-Type', 'application/json');
   response.send(JSON.stringify({
@@ -660,36 +660,44 @@ app.get('/key', function (request, response) {
 });
 
 
-//--Get oppen key with user id
+//15--Get open public key with user id
 app.get('/user/pbkey/', function (request, response) {
   // const idUser = parseInt(request.params.id);
+  response.setHeader('Content-Type', 'application/json');  
   const {
     id
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query(
-      "select pb_key from users where user_id = " + id,
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows[0].pb_key,
-            message: 'Inserted'
-          }));
-        }
-      });
-  });
+  if(Number.isInteger(parseInt(id))){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+      client.query(
+        "select pb_key from users where user_id = " + parseInt(id),
+        function (err, result) {
+          done();
+          if (err) {
+            response.send(JSON.stringify({
+              status: 'error',
+              data: err,
+              message: messFailed
+            }));
+          } else {
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows[0].pb_key,
+              message: 'Inserted'
+            }));
+          }
+        });
+    });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //11--Get all request with your id
