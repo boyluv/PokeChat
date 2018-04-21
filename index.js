@@ -314,6 +314,7 @@ app.get('/listconvo/cate', function (request, response) {
           if (err) {
             response.send(JSON.stringify({
               status: 'error',
+              isEmpty: true,              
               data: err,
               message: messFailed
             }));
@@ -343,7 +344,7 @@ app.get('/listconvo/cate', function (request, response) {
     response.send(JSON.stringify({
       status: 'success',
       data: 'convo_cat is not number',
-      isEmpty: false,      
+      isEmpty: true,      
       message: messFailed
     }));
   }
@@ -351,14 +352,14 @@ app.get('/listconvo/cate', function (request, response) {
 });
 
 
-//3--Get all user in system
+//6--Get all user in system
 app.get('/users', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT * FROM users ",
       function (err, result) {
         done();
-        response.setHeader('Content-Type', 'application/json');
         if (err) {
           response.send(JSON.stringify({
             status: 'error',
@@ -368,24 +369,32 @@ app.get('/users', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: 'Return test file'
-          }));
+          if (result.rows.length == 0) {
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: messNoData
+            }));
+          } else {
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: messSuccess
+            }));
+          }
         }
       });
   });
 });
 
-//4--Get all catergories in system
+//7--Get all catergories in system
 app.get('/categories', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
       "SELECT * FROM categories ",
       function (err, result) {
         done();
-        response.setHeader('Content-Type', 'application/json');
         if (err) {
           response.send(JSON.stringify({
             status: 'error',
@@ -395,11 +404,20 @@ app.get('/categories', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: 'Return test file'
-          }));
+          if (result.rows.length == 0) {
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: messNoData
+            }));
+          } else {
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: messSuccess
+            }));
+          }
+
         }
       });
   });
