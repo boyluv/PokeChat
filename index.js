@@ -700,41 +700,50 @@ app.get('/user/pbkey/', function (request, response) {
   
 });
 
-//11--Get all request with your id
+//16--Get all request with your id
 app.get('/request/:id', function (request, response) {
   const id = parseInt(request.params.id);
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    client.query(
-      " select * from request WHERE CAST(req_receiver AS integer)  = " + id,
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          if (result.rows.length > 0)
+  response.setHeader('Content-Type', 'application/json');
+  if(Number.isInteger(id)){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      client.query(
+        " select * from request WHERE CAST(req_receiver AS integer)  = " + id,
+        function (err, result) {
+          done();
+          if (err) {
             response.send(JSON.stringify({
-              status: 'success',
-              haveNotification: true,
-              data: result.rows,
-              message: 'Return test file'
+              status: 'error',
+              data: err,
+              message: messFailed
             }));
-          else
-            response.send(JSON.stringify({
-              status: 'success',
-              haveNotification: false,
-              data: result.rows,
-              message: 'Return test file'
-            }));
-        }
-      });
-  });
+          } else {
+            if (result.rows.length > 0)
+              response.send(JSON.stringify({
+                status: 'success',
+                haveNotification: true,
+                data: result.rows,
+                message: messSuccess
+              }));
+            else
+              response.send(JSON.stringify({
+                status: 'success',
+                haveNotification: false,
+                data: result.rows,
+                message: messNoData
+              }));
+          }
+        });
+    });
+  } 
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      haveNotification: false,      
+      message: messFailed
+    }));
+  } 
+  
 });
 
 //12--add new replies
