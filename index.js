@@ -226,7 +226,6 @@ app.get('/admin', function (request, response) {
           response.send(JSON.stringify({
             status: 'success',
             data: result.rows,
-            isEmpty: false,
             message: messSuccess
           }));
         }
