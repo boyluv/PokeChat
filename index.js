@@ -27,23 +27,12 @@ app.get('/db', function (request, response) {
         response.send("Error " + err);
       } else {
 
-        //     results.forEach(function(r) { 
-        //         r.id  + r.name
-        //  }); 
-        // response.status(200)
-        // .json({
-        //   status: 'success',
-        //   data: result.row[0],
-        //   message: 'Retrieved ALL puppies'
-        // });
-
         response.send(JSON.stringify({
           status: 'success',
           data: result.rows,
           message: 'Return test file'
         }));
-        // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
-      } //response.render('pages/db', {results: result.rows} ); }
+      } 
     });
   });
 });
@@ -215,7 +204,7 @@ app.get('/checkconvo', function (request, response) {
 
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = "+adminId+" and convo_by = "+userId,
+      "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = " + adminId + " and convo_by = " + userId,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -228,15 +217,14 @@ app.get('/checkconvo', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          if(result.rows.length == 0){
+          if (result.rows.length == 0) {
             response.send(JSON.stringify({
               status: 'success',
               haveConnect: false,
               data: result.rows,
               message: 'Return test file'
             }));
-          }
-          else{
+          } else {
             response.send(JSON.stringify({
               status: 'success',
               haveConnect: true,
@@ -244,7 +232,7 @@ app.get('/checkconvo', function (request, response) {
               message: 'Return test file'
             }));
           }
-          
+
         }
       });
   });
@@ -258,7 +246,7 @@ app.get('/listconvo/cate', function (request, response) {
   } = request.query
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "select user_name,rep_by,rep_message,convo_id from (select * from conversations, (select rep_id,rep_message,replies.ref_convo_id,rep_by,rep_time from replies, (select Max(rep_time) as time,ref_convo_id from replies group by ref_convo_id) as table2 where replies.rep_time = table2.time and replies.ref_convo_id = table2.ref_convo_id) as table3 where conversations.convo_id = table3.ref_convo_id) as table4,users where table4.convo_cat = "+convo_cat+" and users.user_id=table4.rep_by",
+      "select user_name,rep_by,rep_message,convo_id from (select * from conversations, (select rep_id,rep_message,replies.ref_convo_id,rep_by,rep_time from replies, (select Max(rep_time) as time,ref_convo_id from replies group by ref_convo_id) as table2 where replies.rep_time = table2.time and replies.ref_convo_id = table2.ref_convo_id) as table3 where conversations.convo_id = table3.ref_convo_id) as table4,users where table4.convo_cat = " + convo_cat + " and users.user_id=table4.rep_by",
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -271,19 +259,18 @@ app.get('/listconvo/cate', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          if(result.rows.length == 0 ){
+          if (result.rows.length == 0) {
             response.send(JSON.stringify({
               status: 'success',
               isEmpty: true,
               data: result.rows,
               message: 'Return test file'
             }));
-          }
-          else{
+          } else {
             response.send(JSON.stringify({
               status: 'success',
               data: result.rows,
-              isEmpty: false,              
+              isEmpty: false,
               message: 'Return test file'
             }));
           }
@@ -528,7 +515,7 @@ app.get('/user/pbkey/', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
-      "select pb_key from users where user_id = "+id,
+      "select pb_key from users where user_id = " + id,
       function (err, result) {
         done();
         response.setHeader('Content-Type', 'application/json');
@@ -672,7 +659,7 @@ app.post('/convoadd', function (request, response) {
           console.error(err);
           response.send("Error " + err);
         } else {
-          if(result.rows.length == 0 ){
+          if (result.rows.length == 0) {
             //Insert new value
             client.query(
               "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
@@ -688,13 +675,12 @@ app.post('/convoadd', function (request, response) {
                   console.error(err2);
                   response.send("Error " + err2);
                 } else {
-                  if(result2.rows.length > 0 ){
+                  if (result2.rows.length > 0) {
                     response.send(JSON.stringify({
                       status: 'success',
                       message: 'Inserted inside'
                     }));
-                  }
-                  else{
+                  } else {
                     client.query(
                       "select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
                       function (err3, result3) {
@@ -717,154 +703,22 @@ app.post('/convoadd', function (request, response) {
                         }
                       });
                   }
-                  
+
 
                 }
               });
-          }
-          else
-          response.send(JSON.stringify({
-            status: 'success',
-            data: result.rows,
-            message: 'Already have'
-          }));
-          
+          } else
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              message: 'Already have'
+            }));
+
         }
       });
   });
 });
-//16 Add new conversation, or ignore if you have
-// app.post('/convoadd', function (request, response) {
-//   const {
-//     convo_cat,
-//     convo_by
-//   } = request.query
-//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-//     response.send(JSON.stringify({
-//               status: 'error',
-//               data: "Hello",
-//               message: 'Request failed'
-//             }));
-//   });
-// }
 
-    // client.query(
-    //   " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-    //   function (err, result) {
-    //     done();
-    //     response.setHeader('Content-Type', 'application/json');
-    //     if (err) {
-    //       response.send(JSON.stringify({
-    //         status: 'error',
-    //         data: err,
-    //         message: 'Request failed'
-    //       }));
-    //       console.error(err);
-    //       response.send("Error " + err);
-    //     } else {
-    //       response.send(JSON.stringify({
-    //         status: 'success',
-    //         data: result.rows,
-    //         message: 'Return test file'}));
-
-    //       // if (result.rows.length > 0)
-    //       //   response.send(JSON.stringify({
-    //       //     status: 'success',
-    //       //     data: result.rows,
-    //       //     message: 'Return test file'
-    //       //   }));
-    //       // else {
-    //       //   client.query(
-    //       //     " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
-    //       //     function (err2, result2) {
-    //       //       done();
-    //       //       response.setHeader('Content-Type', 'application/json');
-    //       //       if (err2) {
-    //       //         response.send(JSON.stringify({
-    //       //           status: 'error',
-    //       //           data: err2,
-    //       //           message: 'Request failed'
-    //       //         }));
-    //       //         console.error(err2);
-    //       //         response.send("Error " + err2);
-    //       //       } else {
-    //       //         client.query(
-    //       //           " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-    //       //           function (err, result) {
-    //       //             done();
-    //       //             response.setHeader('Content-Type', 'application/json');
-    //       //             if (err) {
-    //       //               response.send(JSON.stringify({
-    //       //                 status: 'error',
-    //       //                 data: err,
-    //       //                 message: 'Request failed'
-    //       //               }));
-    //       //               console.error(err);
-    //       //               response.send("Error " + err);
-    //       //             } else {
-    //       //               if (result.rows.length > 0)
-    //       //                 //It's already have bro
-    //       //                 response.send(JSON.stringify({
-    //       //                   status: 'success',
-    //       //                   data: result.rows,
-    //       //                   message: 'Return test file'
-    //       //                 }));
-    //       //               else {
-    //       //                 //Nope bro now it's time to insert it
-    //       //                 client.query(
-    //       //                   " INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
-    //       //                   function (err2, result2) {
-    //       //                     done();
-    //       //                     response.setHeader('Content-Type', 'application/json');
-    //       //                     if (err2) {
-    //       //                       response.send(JSON.stringify({
-    //       //                         status: 'error',
-    //       //                         data: err2,
-    //       //                         message: 'Request failed'
-    //       //                       }));
-    //       //                       console.error(err2);
-    //       //                       response.send("Error " + err2);
-    //       //                     } else {
-    //       //                       //Yeah bro you inserted it 
-    //       //                       client.query(
-    //       //                         " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-    //       //                         function (err4, result4) {
-    //       //                           done();
-    //       //                           response.setHeader('Content-Type', 'application/json');
-    //       //                           if (err4) {
-    //       //                             response.send(JSON.stringify({
-    //       //                               status: 'error',
-    //       //                               data: err4,
-    //       //                               message: 'Request failed'
-    //       //                             }));
-    //       //                             console.error(err4);
-    //       //                             response.send("Error " + err4);
-    //       //                           } else {
-    //       //                             if (result4.rows.length > 0)
-    //       //                               response.send(JSON.stringify({
-    //       //                                 status: 'success',
-    //       //                                 data: result4.rows,
-    //       //                                 message: 'Nice bro , finally success!!'
-    //       //                               }));
-    //       //                           }
-    //       //                         });
-    //       //                       //Done
-    //       //                     }
-    //       //                   }
-    //       //                 );
-    //       //               }
-
-    //       //             }
-    //       //           });
-
-    //       //       }
-    //       //     }
-    //       //   );
-    //       // }
-
-    //     }
-
-    
 //THEEND
 //17 Add new categories for admin
 //
@@ -876,7 +730,7 @@ app.post('/cate/add/', function (request, response) {
   } = request.query
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
     client.query(
-      "INSERT INTO categories (cat_name,cat_description) VALUES ('"+cat_name+"','"+cat_description+"')",
+      "INSERT INTO categories (cat_name,cat_description) VALUES ('" + cat_name + "','" + cat_description + "')",
       function (err, result) {
 
         done();
@@ -892,7 +746,7 @@ app.post('/cate/add/', function (request, response) {
         } else {
           pg.connect(process.env.DATABASE_URL, function (err, client, done) {
             client.query(
-              "select * from categories where cat_name = '"+cat_name+"' and cat_description = '"+cat_description+"' ",
+              "select * from categories where cat_name = '" + cat_name + "' and cat_description = '" + cat_description + "' ",
               function (err2, result2) {
                 done();
                 response.setHeader('Content-Type', 'application/json');
@@ -918,129 +772,5 @@ app.post('/cate/add/', function (request, response) {
   });
 });
 
-
-//15--Add convo and return id , input categories and user id
-//--Get all list conservation
-// app.get('/convo/add', function (request, response) {
-//   const {
-//     convo_by,
-//     convo_cat
-//   } = request.query
-//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-//     client.query(
-//       "select * from conversations ",
-//       function (err, result) {
-//         done();
-//         response.setHeader('Content-Type', 'application/json');
-//         if (err) {
-//           response.send(JSON.stringify({
-//             status: 'error',
-//             data: err,
-//             message: 'Request failed'
-//           }));
-//           console.error(err);
-//           response.send("Error " + err);
-//         } else {
-//           response.send(JSON.stringify({
-//             status: 'success',
-//             data: result.rows,
-//             message: 'Return test file'
-//           }));
-
-//         }
-//       });
-//   });
-// });
-// if (result.rows.length > 0) {
-//   response.send(JSON.stringify({
-//     status: 'success',
-//     data: result.rows,
-//     message: 'Return test file'
-//   }));
-// } else {
-//   response.send(JSON.stringify({
-//     status: 'success',
-//     data: result.rows,
-//     message: 'Return test file'
-//   }));
-//   // client.query(
-//   //   "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP);",
-//   //   function (err, result) {
-//   //     done();
-//   //     response.setHeader('Content-Type', 'application/json');
-//   //     if (err) {
-//   //       response.send(JSON.stringify({
-//   //         status: 'error',
-//   //         data: err,
-//   //         message: 'Request failed'
-//   //       }));
-//   //       console.error(err);
-//   //       response.send("Error " + err);
-//   //     } else {
-//   //       response.send(JSON.stringify({
-//   //         status: 'success',
-//   //         data: result.rows,
-//   //         message: 'Return test file'
-//   //       }));
-//   //     }
-//   //   }
-//   // )
-// }
-
-
-
-
-
-
-//4--Get all catergories in system
-// app.get('/user/convo', function (request, response) {
-//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-//     client.query(
-//       "SELECT * FROM categories ",
-//       function (err, result) {
-//         done();
-//         response.setHeader('Content-Type', 'application/json');
-//         if (err) {
-//           response.send(JSON.stringify({
-//             status: 'error',
-//             data: err,
-//             message: 'Request failed'
-//           }));
-//           console.error(err);
-//           response.send("Error " + err);
-//         } else {
-//           response.send(JSON.stringify({
-//             status: 'success',
-//             data: result.rows,
-//             message: 'Return test file'
-//           }));
-//         }
-//       });
-//   });
-// });
-// app.get('/test', function (request, response) {
-//   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-//     client.query('SELECT * FROM user', function (err, result) {
-//       done();
-//       response.setHeader('Content-Type', 'application/json');
-//       if (err) {
-//         response.send(JSON.stringify({
-//           status: 'error',
-//           data: err,
-//           message: 'Request failed'
-//         }));
-//         console.error(err);
-//         response.send("Error " + err);
-//       } else {
-//         response.send(JSON.stringify({
-//           status: 'success',
-//           data: result.rows,
-//           message: 'Return test file'
-//         }));
-//         // response.send("Error " + result.rows[0].id  + " "+ result.rows[0].name); 
-//       } //response.render('pages/db', {results: result.rows} ); }
-//     });
-//   });
-// });
 
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
