@@ -112,6 +112,7 @@ app.post('/db/add/', function (request, response) {
 
 //1--Get One conservation with  id
 app.get('/convo/:id', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');  
   var convo_id = 1;  
   try{
     convo_id = parseInt(request.params.id);    
