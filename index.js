@@ -110,7 +110,7 @@ app.post('/db/add/', function (request, response) {
 //End
 
 
-//1--Get One conservation with  id
+//1--Get a conservation with id
 app.get('/convo/:id', function (request, response) {
   response.setHeader('Content-Type', 'application/json');  
   var convo_id = 1;  
@@ -199,27 +199,35 @@ app.get('/listconvo', function (request, response) {
   });
 });
 
-//--Get all user Admin id
+//3--Get all user Admin id
 app.get('/admin', function (request, response) {
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+    response.setHeader('Content-Type', 'application/json');    
     client.query(
       "select user_id,cat_name,cat_description from users,categories where ref_cat_id != 1 and ref_cat_id = cat_id;",
       function (err, result) {
         done();
-        response.setHeader('Content-Type', 'application/json');
         if (err) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
         } else {
+          if (result.rows.length == 0)
           response.send(JSON.stringify({
             status: 'success',
             data: result.rows,
-            message: 'Return test file'
+            message: messNoData
+          }));
+        else
+          response.send(JSON.stringify({
+            status: 'success',
+            data: result.rows,
+            isEmpty: false,
+            message: messSuccess
           }));
         }
       });
@@ -243,7 +251,7 @@ app.get('/checkconvo', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -285,7 +293,7 @@ app.get('/listconvo/cate', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -323,7 +331,7 @@ app.get('/users', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -350,7 +358,7 @@ app.get('/categories', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -386,7 +394,7 @@ app.post('/user/add/', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -421,7 +429,7 @@ app.get('/user/login/', function (request, response) {
             status: 'error',
             isSignin: false,
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           // console.error(err);
           // response.send("Error " + err);
@@ -450,7 +458,7 @@ app.delete('/user/remove/:id', function (request, response) {
         response.send(JSON.stringify({
           status: 'error',
           data: err,
-          message: 'Request failed'
+          message: messFailed
         }));
         console.error(err);
         response.send("Error " + err);
@@ -484,7 +492,7 @@ app.post('/user/replies/', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -511,7 +519,7 @@ app.delete('/replies/remove/:id', function (request, response) {
         response.send(JSON.stringify({
           status: 'error',
           data: err,
-          message: 'Request failed'
+          message: messFailed
         }));
         console.error(err);
         response.send("Error " + err);
@@ -554,7 +562,7 @@ app.get('/user/pbkey/', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -582,7 +590,7 @@ app.get('/request/:id', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -625,7 +633,7 @@ app.post('/request/add', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -652,7 +660,7 @@ app.delete('/request/remove/:id', function (request, response) {
         response.send(JSON.stringify({
           status: 'error',
           data: err,
-          message: 'Request failed'
+          message: messFailed
         }));
         console.error(err);
         response.send("Error " + err);
@@ -685,7 +693,7 @@ app.post('/convoadd', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -701,7 +709,7 @@ app.post('/convoadd', function (request, response) {
                   response.send(JSON.stringify({
                     status: 'error',
                     data: err2,
-                    message: 'Request failed'
+                    message: messFailed
                   }));
                   console.error(err2);
                   response.send("Error " + err2);
@@ -721,7 +729,7 @@ app.post('/convoadd', function (request, response) {
                           response.send(JSON.stringify({
                             status: 'error',
                             data: err3,
-                            message: 'Request failed'
+                            message: messFailed
                           }));
                           console.error(err3);
                           response.send("Error " + err3);
@@ -770,7 +778,7 @@ app.post('/cate/add/', function (request, response) {
           response.send(JSON.stringify({
             status: 'error',
             data: err,
-            message: 'Request failed'
+            message: messFailed
           }));
           console.error(err);
           response.send("Error " + err);
@@ -785,7 +793,7 @@ app.post('/cate/add/', function (request, response) {
                   response.send(JSON.stringify({
                     status: 'error',
                     data: err2,
-                    message: 'Request failed'
+                    message: messFailed
                   }));
                   console.error(err2);
                   response.send("Error " + err2);
