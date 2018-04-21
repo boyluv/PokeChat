@@ -820,87 +820,90 @@ app.delete('/request/remove/:id', function (request, response) {
   
 });
 
-//16 New
+//19 New
 app.post('/convoadd', function (request, response) {
   // const idUser = parseInt(request.params.id);
+  response.setHeader('Content-Type', 'application/json');  
   const {
-    convo_cat,
-    convo_by
+    convo_catValue,
+    convo_byValue
   } = request.query
-  pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-    client.query(
-      " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-      function (err, result) {
-        done();
-        response.setHeader('Content-Type', 'application/json');
-        if (err) {
-          response.send(JSON.stringify({
-            status: 'error',
-            data: err,
-            message: messFailed
-          }));
-          console.error(err);
-          response.send("Error " + err);
-        } else {
-          if (result.rows.length == 0) {
-            //Insert new value
-            client.query(
-              "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
-              function (err2, result2) {
-                done();
-                response.setHeader('Content-Type', 'application/json');
-                if (err2) {
-                  response.send(JSON.stringify({
-                    status: 'error',
-                    data: err2,
-                    message: messFailed
-                  }));
-                  console.error(err2);
-                  response.send("Error " + err2);
-                } else {
-                  if (result2.rows.length > 0) {
+
+  var convo_cat = parseInt(convo_catValue)
+  var convo_by = parseInt(convo_byValue)
+  
+  if(convo_catValue && convo_byValue && Number.isInteger(convo_by) && Number.isInteger(convo_cat)){
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      client.query(
+        " select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
+        function (err, result) {
+          done();
+          if (err) {
+            response.send(JSON.stringify({
+              status: 'error',
+              data: err,
+              message: messFailed
+            }));
+          } else {
+            if (result.rows.length == 0) {
+              //Insert new value
+              client.query(
+                "INSERT INTO conversations (convo_cat,convo_by,convo_time) VALUES (" + convo_cat + "," + convo_by + ",CURRENT_TIMESTAMP)",
+                function (err2, result2) {
+                  done();
+                  if (err2) {
                     response.send(JSON.stringify({
-                      status: 'success',
-                      message: 'Inserted inside'
+                      status: 'error',
+                      data: err2,
+                      message: messFailed
                     }));
                   } else {
-                    client.query(
-                      "select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
-                      function (err3, result3) {
-                        done();
-                        response.setHeader('Content-Type', 'application/json');
-                        if (err3) {
-                          response.send(JSON.stringify({
-                            status: 'error',
-                            data: err3,
-                            message: messFailed
-                          }));
-                          console.error(err3);
-                          response.send("Error " + err3);
-                        } else {
-                          response.send(JSON.stringify({
-                            status: 'success',
-                            data: result3.rows,
-                            message: 'Here is your new inserted'
-                          }));
-                        }
-                      });
+                    if (result2.rows.length > 0) {
+                      response.send(JSON.stringify({
+                        status: 'success',
+                        message: 'Inserted inside'
+                      }));
+                    } else {
+                      client.query(
+                        "select * from conversations where convo_cat = " + convo_cat + " and convo_by = " + convo_by,
+                        function (err3, result3) {
+                          done();
+                          if (err3) {
+                            response.send(JSON.stringify({
+                              status: 'error',
+                              data: err3,
+                              message: messFailed
+                            }));
+                          } else {
+                            response.send(JSON.stringify({
+                              status: 'success',
+                              data: result3.rows,
+                              message: 'Here is your new inserted'
+                            }));
+                          }
+                        });
+                    }
                   }
-
-
-                }
-              });
-          } else
-            response.send(JSON.stringify({
-              status: 'success',
-              data: result.rows,
-              message: 'Already have'
-            }));
-
-        }
-      });
-  });
+                });
+            } else
+              response.send(JSON.stringify({
+                status: 'success',
+                data: result.rows,
+                message: 'Already have'
+              }));
+  
+          }
+        });
+    });
+  }
+  else{
+    response.send(JSON.stringify({
+      status: 'error',
+      data: 'wrong input',
+      message: messFailed
+    }));
+  }
+  
 });
 
 //THEEND
