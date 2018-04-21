@@ -288,7 +288,7 @@ app.get('/checkconvo', function (request, response) {
     response.send(JSON.stringify({
       status: 'success',
       haveConnect: false,
-      data: 'admin id is not number',
+      data: 'admin id is not number' + adminId,
       message: messFailed
     }));
   }
