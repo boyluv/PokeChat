@@ -239,8 +239,8 @@ app.get('/checkconvo', function (request, response) {
     userId
   } = request.query
   
-  if (Number.isInteger(adminId)) {
-    if (Number.isInteger(userId)) {
+  if (Number.isInteger(parseInt(adminId))) {
+    if (Number.isInteger(parseInt(userId))) {
       pg.connect(process.env.DATABASE_URL, function (err, client, done) {
         client.query(
           "select convo_id from users,conversations where convo_cat=ref_cat_id and user_id = " + adminId + " and convo_by = " + userId,
