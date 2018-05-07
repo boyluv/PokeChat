@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
+const auth = require('basic-auth');
 
 const app = express()
 
@@ -10,9 +11,10 @@ const messSuccess = 'Request data success'
 
 //Test example server
 //Start
+
 app.get('/',
   (req, res) => {
-    res.send("Hello super new World!!!!!!!!!!!!!")
+    res.send("hi super new World!!!!!!!!!!!!!")
   })
 
 var pg = require('pg');
@@ -441,7 +443,7 @@ app.post('/user/add/', function (request, response) {
           if (err) {
             response.send(JSON.stringify({
               status: 'error',
-              isSinup: true,              
+              isSinup: true,
               data: err,
               message: messFailed
             }));
@@ -457,7 +459,7 @@ app.post('/user/add/', function (request, response) {
                     if (err) {
                       response.send(JSON.stringify({
                         status: 'error why???',
-                        isSinup: true,                        
+                        isSinup: true,
                         data: err,
                         message: messFailed
                       }));
@@ -490,7 +492,7 @@ app.post('/user/add/', function (request, response) {
 
     response.send(JSON.stringify({
       status: 'success',
-      isSinup: true,      
+      isSinup: true,
       data: 'Wrong input',
       message: messFailed
     }));
@@ -508,7 +510,7 @@ app.get('/user/login/', function (request, response) {
   } = request.query
 
   pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-    response.setHeader('Content-Type', 'application/json');    
+    response.setHeader('Content-Type', 'application/json');
     // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
     client.query(
       "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
@@ -537,9 +539,9 @@ app.get('/user/login/', function (request, response) {
 
 //10--Remove user with id
 app.delete('/user/remove/:id', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const idUser = parseInt(request.params.id);
-  if(Number.isInteger(idUser)){
+  if (Number.isInteger(idUser)) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       // SELECT * FROM categories 
       // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
@@ -560,28 +562,27 @@ app.delete('/user/remove/:id', function (request, response) {
         }
       });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //11--Insert new replies to conservation
 app.post('/user/replies/', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     rep_message,
     ref_convo_id,
     rep_by
   } = request.query
 
-  if(rep_message && ref_convo_id && rep_by && Number.isInteger(parseInt(rep_by))  && Number.isInteger(parseInt(ref_convo_id))){
+  if (rep_message && ref_convo_id && rep_by && Number.isInteger(parseInt(rep_by)) && Number.isInteger(parseInt(ref_convo_id))) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
       client.query(
@@ -602,22 +603,21 @@ app.post('/user/replies/', function (request, response) {
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //12--Remove message with id
 app.delete('/replies/remove/:id', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const idRep = parseInt(request.params.id);
-  if(Number.isInteger(idRep)){
+  if (Number.isInteger(idRep)) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       // SELECT * FROM categories 
       // client.query('delete from users where user_id = ' + idUser, function (err, result) {    
@@ -638,15 +638,14 @@ app.delete('/replies/remove/:id', function (request, response) {
         }
       });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //14--Get key to crypto
@@ -663,11 +662,11 @@ app.get('/key', function (request, response) {
 //15--Get open public key with user id
 app.get('/user/pbkey/', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     id
   } = request.query
-  if(Number.isInteger(parseInt(id))){
+  if (Number.isInteger(parseInt(id))) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
       client.query(
@@ -689,22 +688,21 @@ app.get('/user/pbkey/', function (request, response) {
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //16--Get all request with your id
 app.get('/request/:id', function (request, response) {
   const id = parseInt(request.params.id);
   response.setHeader('Content-Type', 'application/json');
-  if(Number.isInteger(id)){
+  if (Number.isInteger(id)) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         " select * from request WHERE CAST(req_receiver AS integer)  = " + id,
@@ -734,28 +732,27 @@ app.get('/request/:id', function (request, response) {
           }
         });
     });
-  } 
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
-      haveNotification: false,      
+      haveNotification: false,
       message: messFailed
     }));
-  } 
-  
+  }
+
 });
 
 //17--Add new replies
 app.post('/request/add', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     req_sender,
     req_receiver,
     message
   } = request.query
-  if(req_sender && req_receiver && message && Number.isInteger(parseInt(req_receiver)) && Number.isInteger(parseInt(req_sender))){
+  if (req_sender && req_receiver && message && Number.isInteger(parseInt(req_receiver)) && Number.isInteger(parseInt(req_sender))) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         "INSERT INTO request (req_sender,req_receiver,message) VALUES (" + parseInt(req_sender) + "," + parseInt(req_receiver) + ",'" + message + "');",
@@ -775,23 +772,22 @@ app.post('/request/add', function (request, response) {
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //18--delete replies with id
 app.delete('/request/remove/:id', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const idReq = parseInt(request.params.id);
-  if(Number.isInteger(idReq)){
-    pg.connect(process.env.DATABASE_URL, function (err, client, done) {  
+  if (Number.isInteger(idReq)) {
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query('DELETE FROM request WHERE CAST(req_receiver AS integer)  =' + idReq, function (err, result) {
         done();
         if (err) {
@@ -809,21 +805,20 @@ app.delete('/request/remove/:id', function (request, response) {
         }
       });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //19 Add conversation
 app.post('/convoadd', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     convo_cat,
     convo_by
@@ -831,8 +826,8 @@ app.post('/convoadd', function (request, response) {
 
   var convo_catValue = parseInt(convo_cat)
   var convo_byValue = parseInt(convo_by)
-  
-  if(convo_catValue && convo_byValue && Number.isInteger(convo_byValue) && Number.isInteger(convo_catValue)){
+
+  if (convo_catValue && convo_byValue && Number.isInteger(convo_byValue) && Number.isInteger(convo_catValue)) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         " select * from conversations where convo_cat = " + convo_catValue + " and convo_by = " + convo_byValue,
@@ -891,31 +886,30 @@ app.post('/convoadd', function (request, response) {
                 data: result.rows,
                 message: 'Already have'
               }));
-  
+
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'wrong input',
       message: messFailed
     }));
   }
-  
+
 });
 
 //THEEND
 //20 Add new categories for admin
 //
 app.post('/cate/add/', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');  
+  response.setHeader('Content-Type', 'application/json');
   const {
     cat_name,
     cat_description
   } = request.query
-  if(cat_name && cat_description){
+  if (cat_name && cat_description) {
     pg.connect(process.env.DATABASE_URL, function (err, client, done) {
       client.query(
         "INSERT INTO categories (cat_name,cat_description) VALUES ('" + cat_name + "','" + cat_description + "')",
@@ -928,8 +922,9 @@ app.post('/cate/add/', function (request, response) {
               data: err,
               message: messFailed
             }));
-            
+
           } else {
+
             pg.connect(process.env.DATABASE_URL, function (err, client, done) {
               client.query(
                 "select * from categories where cat_name = '" + cat_name + "' and cat_description = '" + cat_description + "' ",
@@ -953,16 +948,65 @@ app.post('/cate/add/', function (request, response) {
           }
         });
     });
-  }
-  else{
+  } else {
     response.send(JSON.stringify({
       status: 'error',
       data: 'Missing input',
       message: messFailed
     }));
   }
-  
+
 });
 
+
+//21 Authenticate
+//Get user id if sign in success
+//9--
+app.get('/authenticate/', function (request, response) {
+  // const idUser = parseInt(request.params.id);
+  const {
+    name,
+    pass
+  } = request.query
+  const credentials = auth(req);
+
+		if (!credentials) {
+			response.send(JSON.stringify({
+        status: 'error',
+        isSignin: false,
+        data: err,
+        message: messFailed
+      }));
+
+		} else {
+      pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+        response.setHeader('Content-Type', 'application/json');
+        // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+        client.query(
+          "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
+          function (err, result) {
+            done();
+            if (err || result.rows.length < 1) {
+              response.send(JSON.stringify({
+                status: 'error',
+                isSignin: false,
+                data: err,
+                message: messFailed
+              }));
+              // console.error(err);
+              // response.send("Error " + err);
+            } else {
+              response.send(JSON.stringify({
+                status: 'success',
+                data: result.rows,
+                isSignin: true,
+                message: 'Here is your id User'
+              }));
+            }
+          });
+      });
+    }
+  
+});
 
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
