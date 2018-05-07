@@ -968,8 +968,8 @@ app.post('/authenticate/', function (request, response) {
   //   name,
   //   pass
   // } = request.query
-  
-  const credentials = auth(req);
+
+  const credentials = auth(request);
 
 		if (!credentials) {
 			response.send(JSON.stringify({
