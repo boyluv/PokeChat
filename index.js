@@ -968,13 +968,14 @@ app.post('/authenticate/', function (request, response) {
   //   name,
   //   pass
   // } = request.query
+  response.setHeader('Content-Type', 'application/json');
 
   const credentials = auth(request);
 		if (!credentials) {
 			response.send(JSON.stringify({
         status: 'error',
         isSignin: false,
-        message: messFailed
+        message: "Authenticate prolems"
       }));
 
 		} else {
@@ -987,7 +988,6 @@ app.post('/authenticate/', function (request, response) {
       //   message: messFailed
       // }));
       pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-        response.setHeader('Content-Type', 'application/json');
         // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
         client.query(
           "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
