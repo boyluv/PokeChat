@@ -962,12 +962,13 @@ app.post('/cate/add/', function (request, response) {
 //21 Authenticate
 //Get user id if sign in success
 //9--
-app.get('/authenticate/', function (request, response) {
+app.post('/authenticate/', function (request, response) {
   // const idUser = parseInt(request.params.id);
-  const {
-    name,
-    pass
-  } = request.query
+  // const {
+  //   name,
+  //   pass
+  // } = request.query
+  
   const credentials = auth(req);
 
 		if (!credentials) {
@@ -979,32 +980,38 @@ app.get('/authenticate/', function (request, response) {
       }));
 
 		} else {
-      pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-        response.setHeader('Content-Type', 'application/json');
-        // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-        client.query(
-          "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
-          function (err, result) {
-            done();
-            if (err || result.rows.length < 1) {
-              response.send(JSON.stringify({
-                status: 'error',
-                isSignin: false,
-                data: err,
-                message: messFailed
-              }));
-              // console.error(err);
-              // response.send("Error " + err);
-            } else {
-              response.send(JSON.stringify({
-                status: 'success',
-                data: result.rows,
-                isSignin: true,
-                message: 'Here is your id User'
-              }));
-            }
-          });
-      });
+      response.send(JSON.stringify({
+        status: 'ok',
+        isSignin: true,
+        data: err,
+        message: messFailed
+      }));
+      // pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      //   response.setHeader('Content-Type', 'application/json');
+      //   // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+      //   client.query(
+      //     "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
+      //     function (err, result) {
+      //       done();
+      //       if (err || result.rows.length < 1) {
+      //         response.send(JSON.stringify({
+      //           status: 'error',
+      //           isSignin: false,
+      //           data: err,
+      //           message: messFailed
+      //         }));
+      //         // console.error(err);
+      //         // response.send("Error " + err);
+      //       } else {
+      //         response.send(JSON.stringify({
+      //           status: 'success',
+      //           data: result.rows,
+      //           isSignin: true,
+      //           message: 'Here is your id User'
+      //         }));
+      //       }
+      //     });
+      // });
     }
   
 });
