@@ -3,4 +3,17 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Activity find job-->
+    <color name="white">#FFFFFF</color>
+    <color name="button_background_pink">#EE497A</color>
+    <color name="hint_text_color">#aeaeae</color>
+
+    <!--item job results-->
+    <color name="text_pink">#BE2051</color>
+    <color name="text_color_light">#5f5f5f</color>
+    <color name="bold_text_gray">#3A3A3A</color>
+    <!--<color name="text_color_feedback">#EB4879</color>-->
+    <color name="colorNavLine">#D6D6D6</color>
+
 </resources>

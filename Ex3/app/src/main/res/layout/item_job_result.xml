@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/job_result_sumary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/job_title"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="11.22dp"
+                    android:textColor="@color/text_pink"
+                    android:text="@string/findjob_job_title"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/job_bookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="37dp"
+                    android:layout_marginTop="11dp"
+                    android:button="@drawable/job_result_custom_checkbox"
+                    android:checked="false"
+                    android:theme="@style/Checkbox" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/job_posted_time"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/text_color_light"
+                android:textSize="12sp"
+                android:text="postTime"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9.78dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_salary" />
+
+                <TextView
+                    android:id="@+id/job_salary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="11dp"
+                    android:text="$ 20 / hour"
+                    android:textColor="@color/bold_text_gray"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.5dp">
+
+                <ImageView
+                    android:id="@+id/job_location_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignBottom="@+id/imageView2"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_location" />
+
+                <TextView
+                    android:id="@+id/job_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toRightOf="@id/job_location_icon"
+                    android:text="Ho Chi Minh, Vietnam"
+                    android:textColor="@color/bold_text_gray"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/job_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="17dp"
+                    android:text="3,4 km"
+                    android:textColor="@color/bold_text_gray"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="11.51dp"
+                    android:layout_height="14.64dp"
+                    android:layout_marginRight="6.49dp"
+                    android:layout_toLeftOf="@id/job_distance"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_placeholder" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="33.5dp">
+
+                <ImageView
+                    android:id="@+id/job_rating_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_star_yellow" />
+
+                <TextView
+                    android:id="@+id/job_average_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="11.67dp"
+                    android:layout_toRightOf="@id/job_rating_icon"
+                    android:text="4,3 (2)"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/job_payment_verified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="60dp"
+                    android:text="Payment Unverified"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/job_payment_verified_icon"
+                    android:layout_width="12.33dp"
+                    android:layout_height="11.8dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="11.67dp"
+                    android:layout_toLeftOf="@id/job_payment_verified"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_payment_none" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/job_result_sumary_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorNavLine" />
+    </LinearLayout>
+</LinearLayout>

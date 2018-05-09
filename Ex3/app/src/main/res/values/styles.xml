@@ -8,4 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--Activity find job-->
+    <style name="EditText_OneLine">
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <style name="PinkButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@color/button_background_pink</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--item job result-->
+    <style name="Checkbox">
+        <item name="colorAccent">#bd2050</item>
+    </style>
 </resources>
