@@ -971,49 +971,105 @@ app.post('/authenticate/', function (request, response) {
   response.setHeader('Content-Type', 'application/json');
 
   const credentials = auth(request);
-		if (!credentials) {
-			response.send(JSON.stringify({
-        status: 'error',
-        isSignin: false,
-        message: "Authenticate prolems"
-      }));
+  if (!credentials) {
+    response.send(JSON.stringify({
+      status: 'error',
+      isSignin: false,
+      message: "Authenticate prolems"
+    }));
 
-		} else {
-      const name = credentials.name;
-      const pass = credentials.pass;
-      // console.log(credentials.name)      
-      // response.send(JSON.stringify({
-      //   status: 'ok',
-      //   isSignin: true,
-      //   message: messFailed
-      // }));
-      pg.connect(process.env.DATABASE_URL, function (err, client, done) {
-        // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
-        client.query(
-          "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
-          function (err, result) {
-            done();
-            if (err || result.rows.length < 1) {
-              response.send(JSON.stringify({
-                status: 'error',
-                isSignin: false,
-                data: err,
-                message: messFailed
-              }));
-              // console.error(err);
-              // response.send("Error " + err);
-            } else {
-              response.send(JSON.stringify({
-                status: 'success',
-                data: result.rows,
-                isSignin: true,
-                message: 'Here is your id User'
-              }));
-            }
-          });
-      });
-    }
-  
+  } else {
+    const name = credentials.name;
+    const pass = credentials.pass;
+    // console.log(credentials.name)      
+    // response.send(JSON.stringify({
+    //   status: 'ok',
+    //   isSignin: true,
+    //   message: messFailed
+    // }));
+    pg.connect(process.env.DATABASE_URL, function (err, client, done) {
+      // client.query('insert into test_table values ('+id+', \''+name+'\')', function(err, result) {
+      client.query(
+        "SELECT user_id,ref_cat_id from users where user_name ='" + name + "' and user_pw='" + pass + "'",
+        function (err, result) {
+          done();
+          if (err || result.rows.length < 1) {
+            response.send(JSON.stringify({
+              status: 'error',
+              isSignin: false,
+              data: err,
+              message: messFailed
+            }));
+            // console.error(err);
+            // response.send("Error " + err);
+          } else {
+            response.send(JSON.stringify({
+              status: 'success',
+              data: result.rows,
+              isSignin: true,
+              message: 'Here is your id User'
+            }));
+          }
+        });
+    });
+  }
+
 });
+
+// --------------------End ---------------------
+//Ex3
+var ex3JobObj = require('./data');
+//--1--Get all list jobs in data
+app.get('/ex3/jobs/all/', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');
+  for (var i = 0; i < ex3JobObj.jobs.length; i++) {
+    console.log(ex3JobObj.jobs[i].title)
+  }
+  response.send(JSON.stringify(ex3JobObj));
+
+});
+//--2-- get job with search
+app.get('/ex3/jobs/', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');
+  const {
+    title,
+    place
+  } = request.query
+  var resultObj = {} // empty Object
+  var key = 'jobs';
+  resultObj[key] = []; // empty Array, which you can push() values into
+
+
+  for (var i = 0; i < ex3JobObj.jobs.length; i++) {
+    if (ex3JobObj.jobs[i].title.toUpperCase().match(title.toUpperCase())) {
+      resultObj[key].push(ex3JobObj.jobs[i]);
+      // console.log(ex3JobObj.jobs[i].title)
+    }
+  }
+  response.send(JSON.stringify(resultObj));
+
+});
+//--3-- get favorite job
+app.get('/ex3/jobs/favorite/', function (request, response) {
+  response.setHeader('Content-Type', 'application/json');
+  const {
+    myarray
+  } = request.query
+
+  var resultObj = {} // empty Object
+  var key = 'jobs';
+  resultObj[key] = []; // empty Array, which you can push() values into
+
+  var array = myarray.split(",").map(Number);
+  for (var i = 0; i < array.length; i++) {
+    //if (ex3JobObj.jobs[i].title.toUpperCase().match(title.toUpperCase())) {
+    resultObj[key].push(ex3JobObj.jobs[array[i]]);
+    //}
+  }
+
+  response.send(JSON.stringify(resultObj));
+
+});
+// --------------------End ---------------------
 
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
