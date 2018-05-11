@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Find Jobs Application</string>
     <!--Find job activity-->
+    <string name="findjob_title">Find Jobs</string>
     <string name="findjob_job_title">Job title or keyword</string>
     <string name="findjob_location">Your location</string>
     <string name="findjob_find_job">Find job</string>
     <string name="findjob_recent_searches">Recent searches</string>
 
+    <!--Toolbar-->
+    <string name="action_settings">Settings</string>
+    <string name="action_favorite">Favorite</string>
 
 </resources>
