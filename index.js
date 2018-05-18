@@ -1024,6 +1024,7 @@ app.get('/ex3/jobs/all/', function (request, response) {
   response.setHeader('Content-Type', 'application/json');
   for (var i = 0; i < ex3JobObj.jobs.length; i++) {
     console.log(ex3JobObj.jobs[i].title)
+    ex3JobObj.jobs[i]["id"] = i;
   }
   response.send(JSON.stringify(ex3JobObj));
 
@@ -1042,6 +1043,7 @@ app.get('/ex3/jobs/', function (request, response) {
 
   for (var i = 0; i < ex3JobObj.jobs.length; i++) {
     if (ex3JobObj.jobs[i].title.toUpperCase().match(title.toUpperCase())) {
+      ex3JobObj.jobs[i]["id"] = i;
       resultObj[key].push(ex3JobObj.jobs[i]);
       // console.log(ex3JobObj.jobs[i].title)
     }
@@ -1062,6 +1064,7 @@ app.get('/ex3/jobs/favorite/', function (request, response) {
 
   var array = myarray.split(",").map(Number);
   for (var i = 0; i < array.length; i++) {
+    ex3JobObj.jobs[i]["id"] = i;
     //if (ex3JobObj.jobs[i].title.toUpperCase().match(title.toUpperCase())) {
     resultObj[key].push(ex3JobObj.jobs[array[i]]);
     //}

@@ -8,10 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-
+    private EditText title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setTitle(getString(R.string.findjob_title));
         setSupportActionBar(myToolbar);
-
+        title = (EditText) findViewById(R.id.main_job_title);
         Button btn_search = (Button) findViewById(R.id.main_find_job_button);
         btn_search.setOnClickListener(this);
     }
@@ -55,7 +56,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.main_find_job_button:
                 Intent intent = new Intent(getBaseContext(),JobResultActivity.class);
-                intent.putExtra(ExtraKey.TYPE_RESULT,EnumUtils.Jobs.toString());
+                if(title.getText().toString().isEmpty() || title.getText().toString().equals(""))
+                    intent.putExtra(ExtraKey.TYPE_RESULT,EnumUtils.AllJobs.toString());
+                else{
+                    intent.putExtra(ExtraKey.TYPE_RESULT,EnumUtils.FindJobs.toString());
+                    intent.putExtra(ExtraKey.TITLE,title.getText().toString());
+                }
                 startActivity(intent);
                 break;
                 default:break;

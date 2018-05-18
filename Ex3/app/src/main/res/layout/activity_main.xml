@@ -26,7 +26,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="68dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_search_icon" />
 
@@ -35,7 +35,7 @@
             style="@style/EditText_OneLine"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/text_box_border"
             android:hint="@string/findjob_job_title"
             android:paddingLeft="15dp"
@@ -56,7 +56,8 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:textColorHint="@color/hint_text_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/main_find_job_button"
