@@ -17,4 +17,7 @@ public interface SOService {
 
     @GET("/ex3/jobs")
     Call<BaseResponse> getJobsWithTitle(@Query("title") String kwTitle);
+
+    @GET("/ex3/jobs/favorite/")
+    Call<BaseResponse> getFavoriteJob(@Query("myarray") String listFavorite);
 }

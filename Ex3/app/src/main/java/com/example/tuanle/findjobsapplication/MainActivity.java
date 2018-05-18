@@ -1,6 +1,9 @@
 package com.example.tuanle.findjobsapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +26,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         title = (EditText) findViewById(R.id.main_job_title);
         Button btn_search = (Button) findViewById(R.id.main_find_job_button);
         btn_search.setOnClickListener(this);
+
+
+
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putString(getString(R.string.listFavorite),"1,2,6");
+//        editor.commit();
     }
 
     @Override
@@ -35,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_favorite:
+
+//        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+//        String favorite = sharedPref.getString(getString(R.string.listFavorite), "");
+
                 Toast.makeText(getBaseContext(),"This is favorite",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getBaseContext(),JobResultActivity.class);
                 intent.putExtra(ExtraKey.TYPE_RESULT,EnumUtils.Favorite.toString());

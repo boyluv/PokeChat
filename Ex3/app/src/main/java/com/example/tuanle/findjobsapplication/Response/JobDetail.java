@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class JobDetail {
+    @SerializedName("id")
+    @Expose
+    private String id;
+
     @SerializedName("title")
     @Expose
     private String title;
@@ -19,6 +23,10 @@ public class JobDetail {
     @SerializedName("description")
     @Expose
     private String description;
+
+    public String getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;

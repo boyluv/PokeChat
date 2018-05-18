@@ -1,6 +1,9 @@
 package com.example.tuanle.findjobsapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,13 +41,34 @@ public class JobResultActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String favorite = preferences.getString(getString(R.string.listFavorite), null);
+
+//        String favorite = "1,3,6";
         rv_result_jobs = (RecyclerView) findViewById(R.id.rv_job_result);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rv_result_jobs.setLayoutManager(layoutManager);
-        resultJobAdapter = new ResultJobAdapter();
+        resultJobAdapter = new ResultJobAdapter(this);
         list = new ArrayList<JobDetail>();
         mSoService = ApiUtils.getSOService();
         switch (type){
+
+            case "Favorite":
+                if(favorite!=null){
+                    mSoService.getFavoriteJob(favorite).enqueue(new Callback<BaseResponse>() {
+                        @Override
+                        public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                            resultJobAdapter.setListJob(response.body().getJobs());
+                            resultJobAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                        }
+                    });
+                    break;
+                }
             case "AllJobs":
                 mSoService.getAllJobs().enqueue(new Callback<BaseResponse>() {
                     @Override
@@ -58,8 +82,6 @@ public class JobResultActivity extends AppCompatActivity {
 
                     }
                 });
-                break;
-            case "Favorite":
                 break;
             case "FindJobs":
                 mSoService.getJobsWithTitle(getIntent().getStringExtra(ExtraKey.TITLE)).enqueue(new Callback<BaseResponse>() {
