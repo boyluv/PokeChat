@@ -1072,6 +1072,7 @@ app.get('/ex3/jobs/favorite/', function (request, response) {
 
   response.send(JSON.stringify(resultObj));
 
+  
 });
 // --------------------End ---------------------
 
