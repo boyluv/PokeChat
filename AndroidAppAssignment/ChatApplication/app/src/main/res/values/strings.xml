@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">YACA</string>
+
+
+    <!--Main Activity-->
+    <string name="application_name">Chat Application</string>
+    <string name="user_name">Username</string>
+    <string name="user_name_hint">trumsatthu</string>
+    <string name="password_hint">123</string>
+    <string name="password">Password</string>
+    <string name="retypePassword">Retype Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+
+</resources>

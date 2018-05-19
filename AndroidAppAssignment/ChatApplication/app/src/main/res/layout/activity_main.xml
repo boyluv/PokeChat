@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.MainActivity"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_app_name"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:text="@string/application_name"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:textSize="24sp"/>-->
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_marginTop="50sp"
+        android:text="@string/user_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:inputType="text"
+        android:text="@string/user_name_hint"
+        android:hint="@string/user_name_hint"/>
+
+    <TextView
+        android:id="@+id/tv_password"
+        android:text="@string/password"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/edt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edt_password"/>
+    <EditText
+        android:id="@+id/edt_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_password"
+        android:inputType="textPassword"
+        android:text="@string/password_hint"
+        />
+    <Button
+        android:id="@+id/signin_btn"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/edt_password"
+        android:background="@color/colorPrimary"
+        android:text="@string/sign_in"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        />
+    <Button
+        android:id="@+id/signup_btn"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/signin_btn"
+        android:background="@color/colorPrimary"
+        android:text="@string/sign_up"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        />
+
+    <Button
+        android:id="@+id/signup_admin_btn"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/signup_btn"
+        android:background="@color/colorPrimary"
+        android:text="Signup as Admin"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        />
+
+</RelativeLayout>

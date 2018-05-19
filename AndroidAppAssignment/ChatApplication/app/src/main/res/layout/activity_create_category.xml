@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.CreateCategory"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+    <TextView
+        android:id="@+id/tv_catName"
+        android:layout_marginTop="50sp"
+        android:text="Category name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edt_catName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_catName"
+        android:inputType="text"
+        android:hint="@string/user_name_hint"/>
+
+    <TextView
+        android:id="@+id/tv_catDescript"
+        android:text="Category Description"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/edt_catName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edt_catDescript"/>
+    <EditText
+        android:id="@+id/edt_catDescript"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_catDescript"
+        android:inputType="text"
+        android:text=""
+        android:hint="Write about category"
+        />
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/edt_catDescript"
+        android:background="@color/colorPrimary"
+        android:text="Next"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        />
+</RelativeLayout>
