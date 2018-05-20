@@ -1075,5 +1075,4 @@ app.get('/ex3/jobs/favorite/', function (request, response) {
   
 });
 // --------------------End ---------------------
-
 app.listen(PORT, () => console.log('Example app listening on port 5000!'))
