@@ -227,13 +227,14 @@ public class ConservationListActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    else{
+                    loadListConvo();
+                    //else{
                         new Handler().postDelayed(new Runnable() {
                             public void run() {
                                 new ListenRequest().execute("","","");
                             }
-                        }, 5000);
-                    }
+                        }, 2000);
+                    //}
                         curResponse = null;
                 }
 

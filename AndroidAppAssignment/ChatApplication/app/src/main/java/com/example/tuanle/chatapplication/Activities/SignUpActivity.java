@@ -47,15 +47,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
                 if(response.isSuccessful()){
                     mKey = response.body().getData();
-                    Toast.makeText(getBaseContext(), mKey,
-                            Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(), mKey,
+//                            Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
-                Toast.makeText(getBaseContext(), mKey,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(), mKey,
+//                        Toast.LENGTH_SHORT).show();
             }
         });
     }
