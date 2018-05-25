@@ -35,7 +35,7 @@ public class ValidationUtils {
         Matcher catname_matcher;
 
         final String CAT_PATTERN = "[A-Za-z]{4,}";
-        final String DES_PATTERN = "[A-Za-z0-9]{10,}";
+        final String DES_PATTERN = "[A-Za-z0-9 ]{10,}";
         catname_pattern = Pattern.compile(CAT_PATTERN);
         catname_matcher = catname_pattern.matcher(cat_name);
         catdes_pattern = Pattern.compile(DES_PATTERN);

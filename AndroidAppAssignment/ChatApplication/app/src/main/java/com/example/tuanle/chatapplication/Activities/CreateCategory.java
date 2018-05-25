@@ -43,6 +43,7 @@ public class CreateCategory extends AppCompatActivity {
 
                             Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
                             startActivity(intent);
+                            finish();
                         }
 
                         @Override

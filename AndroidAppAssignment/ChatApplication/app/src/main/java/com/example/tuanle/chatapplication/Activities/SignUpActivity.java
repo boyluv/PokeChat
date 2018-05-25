@@ -106,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if(response.isSuccessful()){
                                 Toast.makeText(getBaseContext(), "Sign up success ",
                                         Toast.LENGTH_SHORT).show();
-
+                                finish();
                             }
 
                             else

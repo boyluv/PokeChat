@@ -65,11 +65,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_signIn.setOnClickListener(this);
         btn_signUp.setOnClickListener(this);
         //If already Log in change to inside
+
+        PreferenceUtils.saveStringPref(getBaseContext(),ExtraKey.USER_CAT,"1");
 //        if(userId !=null){
+//            PreferenceUtils.saveStringPref(getBaseContext(),ExtraKey.USER_CAT,userId);
 //            showListConservation();
 //        }
-        PreferenceUtils.saveStringPref(getBaseContext(),ExtraKey.USER_CAT,"1");
-
         findViewById(R.id.signup_admin_btn).setOnClickListener(this);
     }
     private void signUp() {
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showListConservation(){
         Intent intent = new Intent(getBaseContext(), ConservationListActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void getKey(){
