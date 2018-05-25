@@ -44,13 +44,13 @@ public class DetailConservationAdapter extends RecyclerView.Adapter<DetailConser
         String encryptedMes = curMessage.getRep_message();
         String key = PreferenceUtils.getStringPref(context,ExtraKey.KEY_AES,"");
         String encrypted = "";
-        try{
-            encrypted= CrAES.decryptAES(key,encryptedMes);
-        }
-        catch (Exception e){
-            Log.d("AES","Decrypt failed");
-        }
-        holder.message.setText(encrypted);
+//        try{
+//            encrypted= CrAES.decryptAES(key,encryptedMes);
+//        }
+//        catch (Exception e){
+//            Log.d("AES","Decrypt failed");
+//        }
+        holder.message.setText(encryptedMes);
 
         holder.message.setOnClickListener(new View.OnClickListener() {
             @Override

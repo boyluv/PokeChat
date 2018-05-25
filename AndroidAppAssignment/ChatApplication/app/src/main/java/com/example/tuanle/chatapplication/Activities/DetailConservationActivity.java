@@ -182,17 +182,18 @@ public class DetailConservationActivity extends AppCompatActivity implements Vie
                 final String mes = mMessage.getText().toString();
                 String dencrypted = "";
                 String key = PreferenceUtils.getStringPref(getBaseContext(),ExtraKey.KEY_AES,"");
-                try{
-                    dencrypted = CrAES.encryptAES(key,mes);
-
-                }
-                catch (Exception e){
-                    Log.d("AES","Decrypt failed");
-                }
+//                try{
+//                    dencrypted = CrAES.encryptAES(key,mes);
+//
+//                }
+//                catch (Exception e){
+//                    Log.d("AES","Decrypt failed");
+//                }
 
                 mService =ApiUtils.getSOService();
+
                 //TODO------Update and remove id Message
-                mService.addMessage(dencrypted ,curConvoId,userId).enqueue(new Callback<MessageRequest>() {
+                mService.addMessage(mes ,curConvoId,userId).enqueue(new Callback<MessageRequest>() {
                     @Override
                     public void onResponse(Call<MessageRequest> call, Response<MessageRequest> response) {
                         if(response.isSuccessful()){
