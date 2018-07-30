@@ -12,6 +12,7 @@
   "dependencies": {
     "basic-auth": "^1.0.4",
     "express": "^4.16.3",
+    "git": "^0.1.5",
     "nodemon": "^1.17.3",
     "pg": "6.x"
   },
